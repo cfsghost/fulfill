@@ -1,0 +1,22 @@
+{
+	"name": "fulfill",
+	"version": "0.0.1",
+	"description": "A web service for Node.js",
+	"main": "app.js",
+	"scripts": {
+	"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+	"type": "git",
+	"url": "https://cfsghost@github.com/cfsghost/fulfill.git"
+	},
+	"keywords": [
+		"web",
+		"template"
+	],
+	"author": "Fred Chien <cfsghost@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/cfsghost/fulfill/issues"
+	}
+}
