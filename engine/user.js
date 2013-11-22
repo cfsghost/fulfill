@@ -92,7 +92,7 @@ User.prototype.auth = function(username, password, callback, data) {
 			data.req.session.email = row.email;
 
 			callback(null, true);
-		})
+		});
 };
 
 User.prototype.signOut = function(callback, data) {
