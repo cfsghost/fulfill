@@ -3,40 +3,49 @@
 var crypto = require('crypto');
 var DBHouse = require('dbhouse');
 
+var dbSettings = {
+	driver: 'mongodb',
+	host: 'localhost',
+	port: '27017',
+	dbName: 'fulfill',
+	table: 'user'
+};
+
 var dbHouse = new DBHouse();
 var db = null;
 
 // Define schema
-var userDatabaseSchema = new DBHouse.Schema({
-	_id: { type: 'UUID' },
-	name: { type: 'String' },
-	username: { type: 'String' },
-	email: { type: 'String' },
-	password: { type: 'String' },
-	projects: {
-		type: 'Array',
-		subtype: 'UUID'
-	},
-	created: { type: 'Date' }
-});
+var model = {
 
-// Index
-var userDatabaseIndex = new DBHouse.Index([
-    { fields: [ 'name' ] },
-    { fields: [ 'username' ] },
-    { fields: [ 'email' ] },
-    { fields: [ 'created' ] }
-]);
+	schema: new DBHouse.Schema({
+		_id: { type: 'UUID' },
+		name: { type: 'String' },
+		username: { type: 'String' },
+		email: { type: 'String' },
+		password: { type: 'String' },
+		projects: {
+			type: 'Array',
+			subtype: 'UUID'
+		},
+		created: { type: 'Date' }
+	}),
+	index: new DBHouse.Index([
+	    { fields: [ 'name' ] },
+	    { fields: [ 'username' ] },
+	    { fields: [ 'email' ] },
+	    { fields: [ 'created' ] }
+	])
+};
 
 // Connect to database
-dbHouse.connect('mongodb', { host: 'localhost', port: 27017 }, function() {
+dbHouse.connect(dbSettings, { host: dbSettings.host, port: dbSettings.port }, function() {
 
 	db = new DBHouse.Database(dbHouse);
 
 	// Create Index
-    db.open('prototyper')
-		.collection('users')
-		.model(userDatabaseSchema, userDatabaseIndex)
+	db.open(dbSettings.dbName)
+		.collection(dbSettings.table)
+		.model(model.schema, model.index)
 		.createIndex();
 });
 
@@ -47,9 +56,9 @@ var User = function() {
 User.prototype.auth = function(username, password, callback, data) {
 	var self = this;
 
-	db.open('prototyper')
-		.collection('users')
-		.model(userDatabaseSchema)
+	db.open(dbSettings.dbName)
+		.collection(dbSettings.table)
+		.model(model.schema)
 		.where({
 			'$or': [ { username: username }, { email: username } ]
 		})
@@ -129,9 +138,9 @@ User.prototype.getMyInfo = function(callback, data) {
 
 User.prototype.getInfo = function(username, callback, data) {
 
-	db.open('prototyper')
-		.collection('users')
-		.model(userDatabaseSchema)
+	db.open(dbSettings.dbName)
+		.collection(dbSettings.table)
+		.model(model.schema)
 		.where({
 			username: username
 		})
@@ -153,106 +162,23 @@ User.prototype.getInfo = function(username, callback, data) {
 				name: rows[0].name,
 				email: rows[0].email,
 				username: rows[0].username,
-				projects: rows[0].projects,
 				created: rows[0].created
 			});
 
 		});
 };
 
-User.prototype.getProjects = function(username, callback, data) {
-
-	var project = data.req.frex.Engine('Project');
-
-	db.open('prototyper')
-		.collection('users')
-		.model(userDatabaseSchema)
-		.where({
-			username: username
-		})
-		.limit(1)
-		.query(function(err, rows) {
-
-			if (err) {
-				callback(new Error('There is problem happened to user database'));
-				return;
-			}
-
-			// No such user
-			if (rows.length == 0) {
-				callback(new Error('No such user'));
-				return;
-			}
-
-			// There is no project user have
-			if (!rows[0].projects) {
-				callback(null, []);
-				return;
-			}
-
-			var projects = [];
-			rows.parallel(5, function(projectID, index, arr, completed) {
-
-				project.getInfoByID(projectID, function(err, info) {
-					projects.push(info);
-
-					completed();
-				});
-			}, function() {
-
-				callback(null, projects);
-			});
-		});
-	
-};
-
-User.prototype.appendProject = function(projectID, callback, data) {
-	var self = this;
-
-	// Login is required
-	if (!data.req.session.username) {
-		callback(new Error('No permission to access'));
-		return;
-	}
-
-	var pjIDs = null;
-	if (projectID instanceof Array) 
-		pjIDs = projectID;
-	else
-		pjIDs = [ projectID ];
-
-	db.open('prototyper')
-		.collection('users')
-		.model(userDatabaseSchema)
-		.where({
-			username: data.req.session.username
-		})
-		.update({
-			'$pushAll': {
-				projects: pjIDs
-			}
-		}, function(err) {
-			if (err) {
-				callback(err);
-				return;
-			}
-
-			callback(null);
-		});
-};
-
 User.prototype.signUp = function(info, callback, data) {
 	var self = this;
 
-	db.open('prototyper')
-		.collection('users')
-		.model(userDatabaseSchema)
+	db.open(dbSettings.dbName)
+		.collection(dbSettings.table)
+		.model(model.schema)
 		.insert({
 			name: info.name,
 			email: info.email,
 			username: info.username,
 			password: crypto.createHmac('sha256', info.password).digest('hex'),
-			projects: [],
 			created: new Date().getTime()
 		}, function(err, row) {
 
