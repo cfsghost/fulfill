@@ -14,6 +14,14 @@ app.configure(function() {
 		res.locals.configs = app.locals.configs;
 		next();
 	});
+
+	// Session
+	app.use(Frex.cookieParser());
+	app.use(Frex.cookieSession({
+		key: 'fulfill',
+		secret: app.locals.configs.app.secret_key
+	}));
+
 	app.use(app.router);
 	app.use(Frex.static(__dirname + '/public'));
 });
