@@ -1,0 +1,12 @@
+html,
+body {
+	font-size: 15px;
+	height: 100%;
+}
+
+body {
+	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	padding: 0px;
+	margin: 0px;
+	text-rendering: optimizeLegibility;
+}
