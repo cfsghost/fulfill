@@ -1,13 +1,14 @@
 html
 	head
 		title #{configs.app.service_name}
-		link(href='/css/bootstrap.min.css', media='all', rel='stylesheet', type='text/css')
+		link(href='/css/semantic.min.css', media='all', rel='stylesheet', type='text/css')
 		link(href='/css/default.css', media='all', rel='stylesheet', type='text/css')
-		script(type='text/javascript', src='/js/bootstrap.min.js')
 		script(type='text/javascript', src='/frex')
+		script(type='text/javascript', src='/js/jquery.min.js')
+		script(type='text/javascript', src='/js/semantic.min.js')
 		script(type='text/javascript', src='/js/index.js')
 
 	body
-		nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
-			div.navbar-header
-				a.navbar-brand #{configs.app.service_name}
+
+		div.ui.top.sidebar.menu.inverted.active
+			div.header.item #{configs.app.service_name}
