@@ -1,5 +1,8 @@
 {
 	"service_name": "Fulfill Web Service",
 	"port": 50714,
-	"secret_key": "FUlFIlLWeBsErViCE1985y1115X1986Y0714MaNDICECoOL"
+	"secret_key": "FUlFIlLWeBsErViCE1985y1115X1986Y0714MaNDICECoOL",
+	"owner": {
+		"name": "Fulfill, Inc."
+	}
 }
