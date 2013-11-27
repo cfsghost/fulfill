@@ -12,9 +12,17 @@ html
 
 	body
 
-		div.ui.top.sidebar.menu.inverted.active
-			div.header.item #{configs.app.service_name}
+		div.ui.inverted.page.grid.masthead.segment
+			div.column
+				div.ui.menu.inverted.secondary.pointing.active
+					div.header.item #{configs.app.service_name}
 
-			a.item.right.popup(data-content='Sign In', data-position='bottom center', data-variation='inverted')
-				i.icon.sign.in
-				!='Sign In'
+					a.item.right.popup(data-content='Sign In', data-position='bottom center', data-variation='inverted')
+						i.icon.sign.in
+						!='Sign In'
+
+				div.ui.information.transition
+					h1.ui.inverted.header #{configs.app.service_name}
+					p Easy and fast to build up your web service
+
+		div.ui.page.grid.overview.segment

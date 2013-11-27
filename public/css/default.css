@@ -10,3 +10,37 @@ body {
 	margin: 0px;
 	text-rendering: optimizeLegibility;
 }
+
+.ui.header {
+	font-family: 'Source Sans Pro', "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+.ui.header, h1, h2 {
+	font-weight: normal !important;
+}
+
+.ui.page.grid.segment {
+	padding-top: 3.5rem;
+	padding-bottom: 3.5rem;
+}
+
+.masthead.segment {
+	background-image: url(/images/bg.jpg);
+	-webkit-background-size: cover;
+	background-size: cover;
+	margin: 0em;
+	padding-top: 4rem;
+	overflow: hidden;
+	-webkit-box-shadow: 0 -20px 10px 0 rgba(0, 0, 0, 0.1) inset !important;
+	box-shadow: 0 -20px 10px 0 rgba(0, 0, 0, 0.1) inset !important;
+}
+
+.masthead.segment .information {
+	margin: 3em 1em 1em 280px;
+}
+
+.masthead.segment .information p {
+	max-width: 600px;
+	margin: 0em 0px 2em 0em;
+	font-size: 1.2em;
+}
