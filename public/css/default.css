@@ -44,3 +44,9 @@ body {
 	margin: 0em 0px 2em 0em;
 	font-size: 1.2em;
 }
+
+.ui.inverted.nature.segment {
+	background-image: url(/images/bg.jpg);
+	background-color: #384450!important;
+	color: #FFF!important;
+}
