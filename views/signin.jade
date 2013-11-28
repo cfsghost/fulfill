@@ -1,7 +1,7 @@
 extends layouts/default
 
 block script
-	script(type='text/javascript', src='/js/index.js')
+	script(type='text/javascript', src='/views/signin.js')
 
 block information
 	div.ui.column.grid
@@ -9,12 +9,13 @@ block information
 		div.seven.wide.column
 
 			div.ui.fluid.form.inverted
-				h3.ui.header Sign In
+				h1.ui.header Sign In
+
 				div.field
 					label Username
-					input(type='text', placeholder='Username')
+					input#signin_username(type='text', placeholder='Username')
 				div.field
 					label Password
-					input(type='password')
+					input#signin_password(type='password')
 
-				div.ui.blue.submit.button Sign In
+				div.ui.blue.submit.button#signin_submit_btn Sign In
