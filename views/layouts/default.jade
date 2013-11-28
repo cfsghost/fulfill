@@ -15,7 +15,7 @@ html
 		div.ui.inverted.page.grid.masthead.segment
 			div.column
 				div.ui.menu.inverted.secondary.pointing.active
-					div.header.item #{configs.app.service_name}
+					a.header.item(href='/') #{configs.app.service_name}
 
 					a.item.right.popup(href='/signin', data-content='Sign In', data-position='bottom center', data-variation='inverted')
 						i.icon.sign.in
