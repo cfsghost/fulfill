@@ -1,0 +1,30 @@
+extends layouts/default
+
+block script
+	script(type='text/javascript', src='/views/signup.js')
+
+block information
+	div.ui.column.grid
+		div.ui.four.wide.column
+		div.seven.wide.column
+
+			div.ui.fluid.form.inverted
+				h1.ui.dividing.header Sign Up
+
+				div.field
+					label Pick a username
+					input#signup_username(type='text', placeholder='Username')
+
+				div.field
+					label Enter your Email
+					input#signup_email(type='text', placeholder='fred@mandice.com')
+
+				div.field
+					label Type your password
+					input#signup_password(type='password')
+
+				div.field
+					label Confirm password
+					input#signup_confirm_password(type='password')
+
+				div.ui.blue.submit.button#signup_submit_btn Sign Up
