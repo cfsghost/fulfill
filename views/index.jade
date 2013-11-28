@@ -1,54 +1,35 @@
-html
-	head
-		meta#viewport(content='width=device-width, initial-scale=1.0')
-		title #{configs.app.service_name}
-		link(href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700', rel='stylesheet', type='text/css')
-		link(href='/css/semantic.min.css', media='all', rel='stylesheet', type='text/css')
-		link(href='/css/default.css', media='all', rel='stylesheet', type='text/css')
-		script(type='text/javascript', src='/frex')
-		script(type='text/javascript', src='/js/jquery.min.js')
-		script(type='text/javascript', src='/js/semantic.min.js')
-		script(type='text/javascript', src='/js/index.js')
+extends layouts/default
 
-	body
+block script
+	script(type='text/javascript', src='/js/index.js')
 
-		div.ui.inverted.page.grid.masthead.segment
-			div.column
-				div.ui.menu.inverted.secondary.pointing.active
-					div.header.item #{configs.app.service_name}
+block information
+	div.ui.information.transition
+		h1.ui.inverted.header #{configs.app.service_name}
+		p Easy and fast to build up your web service.
 
-					a.item.right.popup(data-content='Sign In', data-position='bottom center', data-variation='inverted')
-						i.icon.sign.in
-						!='Sign In'
+block body
+	div.ui.page.grid.overview.segment
+		div.ui.two.wide.column
+		div.twelve.wide.column
+			div.ui.three.column.center.aligned.stackable.divided.grid
+				div.column
+					div.ui.icon.header
+						i.circular.rocket.link.icon
+						!='frex.js'
 
-				div.ui.information.transition
-					h1.ui.inverted.header #{configs.app.service_name}
-					p Easy and fast to build up your web service.
+					p More powerful Express-based web framework
 
-		div.ui.page.grid.overview.segment
-			div.ui.two.wide.column
-			div.twelve.wide.column
-				div.ui.three.column.center.aligned.stackable.divided.grid
-					div.column
-						div.ui.icon.header
-							i.circular.rocket.link.icon
-							!='frex.js'
+				div.column
+					div.ui.icon.header
+						i.circular.magic.link.icon
+						!='Semantic UI'
 
-						p More powerful Express-based web framework
+					p Easy-to-use and fantastic front-end UI framework
 
-					div.column
-						div.ui.icon.header
-							i.circular.magic.link.icon
-							!='Semantic UI'
+				div.column
+					div.ui.icon.header
+						i.circular.coffee.link.icon
+						!='Node.js'
 
-						p Easy-to-use and fantastic front-end UI framework
-
-					div.column
-						div.ui.icon.header
-							i.circular.coffee.link.icon
-							!='Node.js'
-
-						p Great server-side application platform for easily building fast
-
-		div.ui.inverted.page.grid.nature.segment
-			div.column.aligned.right #{configs.app.owner.name}
+					p Great server-side application platform for easily building fast
