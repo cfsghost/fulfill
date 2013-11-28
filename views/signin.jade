@@ -18,4 +18,12 @@ block information
 					label Password
 					input#signin_password(type='password')
 
-				div.ui.blue.submit.button#signin_submit_btn Sign In
+			div.ui.column.grid
+				div.five.wide.column
+					div.ui.blue.submit.button#signin_submit_btn Sign In
+
+				div.eleven.wide.column
+					div No account?
+						!=' '
+						a(href='/signup') Sign Up
+					div Forget your password?
