@@ -38,7 +38,7 @@ var model = {
 };
 
 // Connect to database
-dbHouse.connect(dbSettings, { host: dbSettings.host, port: dbSettings.port }, function() {
+dbHouse.connect(dbSettings.driver, { host: dbSettings.host, port: dbSettings.port }, function() {
 
 	db = new DBHouse.Database(dbHouse);
 
