@@ -45,7 +45,7 @@ body {
 	font-size: 1.2em;
 }
 
-.ui.inverted.nature.segment {
-	background-color: #463850!important;
-	color: #FFF!important;
+.ui.nature.segment {
+	padding: 1rem;
+	border-top: 1px solid #ddd;
 }
