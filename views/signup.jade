@@ -11,20 +11,24 @@ block body
 			div.ui.fluid.form
 				h1.ui.dividing.header Sign Up
 
-				div.field
+				div.field#signup_field_displayname
 					label Pick a display name
-					input#signup_displayname(type='text', placeholder='displayname')
+					input#signup_displayname(type='text', placeholder='Fred Chien')
+					div.ui.red.pointing.above.label.transition.hidden
 
-				div.field
+				div.field#signup_field_email
 					label Enter your Email
 					input#signup_email(type='text', placeholder='fred@mandice.com')
+					div.ui.red.pointing.above.label.transition.hidden
 
-				div.field
+				div.field#signup_field_password
 					label Type your password
 					input#signup_password(type='password')
+					div.ui.red.pointing.above.label.transition.hidden
 
-				div.field
+				div.field#signup_field_confirm_password
 					label Confirm password
 					input#signup_confirm_password(type='password')
+					div.ui.red.pointing.above.label.transition.hidden
 
-				div.ui.blue.submit.button#signup_submit_btn Create an account
+				div.ui.purple.submit.button#signup_submit_btn Create an account

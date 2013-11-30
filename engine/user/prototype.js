@@ -1,55 +1,6 @@
 "use strict";
 
-var crypto = require('crypto');
-var DBHouse = require('dbhouse');
-
-var dbSettings = {
-	driver: 'mongodb',
-	host: 'localhost',
-	port: '27017',
-	dbName: 'fulfill',
-	table: 'user'
-};
-
-var dbHouse = new DBHouse();
-var db = null;
-
-// Define schema
-var model = {
-
-	schema: new DBHouse.Schema({
-		_id: { type: 'UUID' },
-		name: { type: 'String' },
-		username: { type: 'String' },
-		email: { type: 'String' },
-		password: { type: 'String' },
-		projects: {
-			type: 'Array',
-			subtype: 'UUID'
-		},
-		created: { type: 'Date' }
-	}),
-	index: new DBHouse.Index([
-	    { fields: [ 'name' ] },
-	    { fields: [ 'username' ] },
-	    { fields: [ 'email' ] },
-	    { fields: [ 'created' ] }
-	])
-};
-
-// Connect to database
-dbHouse.connect(dbSettings.driver, { host: dbSettings.host, port: dbSettings.port }, function() {
-
-	db = new DBHouse.Database(dbHouse);
-
-	// Create Index
-	db.open(dbSettings.dbName)
-		.collection(dbSettings.table)
-		.model(model.schema, model.index)
-		.createIndex();
-});
-
-var User = function() {
+var User = module.exports = function(frex, engine) {
 	var self = this;
 };
 
@@ -171,6 +122,24 @@ User.prototype.getInfo = function(username, callback, data) {
 User.prototype.signUp = function(info, callback, data) {
 	var self = this;
 
+	var validator = data.req.validator;
+
+	try {
+
+		// Check Email
+		validator.check(info.email, {
+			notEmpty: 'required',
+			isEmail: 'valid email required'
+		}).notEmpty().isEmail();
+
+	} catch(e) {
+		console.log(e.message);
+	}
+
+	callback();
+
+/*
+
 	db.open(dbSettings.dbName)
 		.collection(dbSettings.table)
 		.model(model.schema)
@@ -195,10 +164,5 @@ User.prototype.signUp = function(info, callback, data) {
 
 			callback(null, row);
 		});
-};
-
-module.exports = {
-	type: 'engine',
-	engine_name: 'User',
-	prototype: User
+*/
 };

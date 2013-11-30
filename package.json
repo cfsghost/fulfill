@@ -22,6 +22,7 @@
   "dependencies": {
     "frex.js": "0.0.9",
     "async": "~0.2.9",
-    "dbhouse": "0.0.24"
+    "dbhouse": "0.0.24",
+    "validator": "~2.0.0"
   }
 }
