@@ -7,53 +7,93 @@ App.require('User', function() {
 	// Focus on display name input box by default
 	$('#signup_displayname').focus();
 
-	$('#signup_submit_btn').on('click', function() {
-		var displayName = $('#signup_displayname').val();
-		var email = $('#signup_email').val();
-		var password = $('#signup_password').val();
-		var confirmPassword = $('#signup_confirm_password').val();
-
-//		$('#signup_submit_btn').addClass('disabled');
-
-		function errHandling(delay) {
-
-			setTimeout(function() {
-
-				// Highlight fields
-				$('#signup_field_displayname').addClass('error');
-				$('#signup_field_email').addClass('error');
-				$('#signup_field_password').addClass('error');
-				$('#signup_field_confirm_password').addClass('error');
-
-				$('#signup_field_displayname .label').text('Please enter display name.').transition('fade in');
-				$('#signup_field_email .label').text('Please enter your email.').transition('fade in');
-				$('#signup_field_password .label').text('Please enter password').transition('fade in');
-				$('#signup_field_confirm_password .label').text('Please re-enter password').transition('fade in');
-
-				$('#signup_submit_btn').removeClass('disabled');
-
-				// Focus on email input box
-				$('#signup_displayname').focus();
-			}, delay);
-		}
-
-		// Empty
-		if (displayName == '' || email == '' || password == '' || confirmPassword == '') {
-			errHandling(0);
-			return;
-		}
-
-		// Sign up now
-		user.signUp({ email: email }, function(success) {
-/*
-			if (!success) {
-				errHandling(1000);
-				return;
+	// Validator
+	$('.ui.form')
+		.form({
+			name: {
+				identifier: 'name',
+				rules: [
+					{
+						type: 'empty',
+						prompt: 'Please enter display name'
+					}
+				]
+			},
+			email: {
+				identifier: 'email',
+				rules: [
+					{
+						type: 'empty',
+						prompt: 'Please enter your email'
+					},
+					{
+						type: 'email',
+						prompt: 'Please enter valid email'
+					}
+				]
+			},
+			password: {
+				identifier: 'password',
+				rules: [
+					{
+						type: 'empty',
+						prompt: 'Please enter your password'
+					}
+				]
+			},
+			confirmPassword: {
+				identifier: 'confirm-password',
+				rules: [
+					{
+						type: 'empty',
+						prompt: 'Please enter your password again'
+					},
+					{
+						type: 'match[password]',
+						prompt: 'Password doesn\'t match'
+					}
+				]
 			}
-*/
-			// Success then redirect to home
-			//window.location = '/';
+		}, {
+			inline: true,
+			on: 'blur',
+			onSuccess: function() {
 
+				var displayName = $('#signup_displayname').val();
+				var email = $('#signup_email').val();
+				var password = $('#signup_password').val();
+				var confirmPassword = $('#signup_confirm_password').val();
+
+				// Sign up now
+				user.signUp({
+					displayname: displayName,
+					email: email,
+					password: password
+				}, function(err) {
+
+					if (err) {
+
+						$('#signup_submit_btn').removeClass('loading');
+
+						if (err.name == 'Failed') {
+							$('#signup_field_email').addClass('error');
+							$('.ui.error.message .header').text('Failed to sign up');
+							$('.ui.error.message p').text('Your Email exists already.');
+							$('.ui.error.message').transition('fade in');
+						}
+						return;
+					}
+
+					// Success then redirect to home
+					window.location = '/';
+				});
+			}
 		});
+
+	$('#signup_submit_btn').on('click', function() {
+
+		$('#signup_submit_btn').addClass('loading');
+
+		$('.ui.error.message').addClass('hidden');
 	});
 });

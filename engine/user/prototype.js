@@ -1,5 +1,7 @@
 "use strict";
 
+var crypto = require('crypto');
+
 var User = module.exports = function(frex, engine) {
 	var self = this;
 };
@@ -11,7 +13,7 @@ User.prototype.auth = function(username, password, callback, data) {
 		.collection(dbSettings.table)
 		.model(model.schema)
 		.where({
-			'$or': [ { username: username }, { email: username } ]
+			email: username
 		})
 		.limit(1)
 		.query(function(err, rows) {
@@ -122,47 +124,84 @@ User.prototype.getInfo = function(username, callback, data) {
 User.prototype.signUp = function(info, callback, data) {
 	var self = this;
 
+	var engine = data.engine;
+	var model = engine.database.model;
+	var db = engine.database.db;
+	var dbSettings = engine.database.settings;
 	var validator = data.req.validator;
 
-	try {
+	// Check display name
+	validator.checkObject(info, 'displayname', {
+		notEmpty: engine.statuscode.EMPTY
+	}).notEmpty();
 
-		// Check Email
-		validator.check(info.email, {
-			notEmpty: 'required',
-			isEmail: 'valid email required'
-		}).notEmpty().isEmail();
+	// Check Email
+	validator.checkObject(info, 'email', {
+		isEmail: engine.statuscode.INVALID
+	}).isEmail();
 
-	} catch(e) {
-		console.log(e.message);
+	// Check password
+	validator.checkObject(info, 'password', {
+		notEmpty: engine.statuscode.EMPTY
+	}).notEmpty();
+
+	var errors = validator.getObjectErrors();
+	if (errors) {
+		callback(new data.Error('FieldError', errors));
+		return;
 	}
 
-	callback();
-
-/*
-
+	// Check whether email exists
 	db.open(dbSettings.dbName)
 		.collection(dbSettings.table)
 		.model(model.schema)
-		.insert({
-			name: info.name,
-			email: info.email,
-			username: info.username,
-			password: crypto.createHmac('sha256', info.password).digest('hex'),
-			created: new Date().getTime()
-		}, function(err, row) {
+		.select({
+			id: 1
+		})
+		.where({
+			email: info.email
+		})
+		.limit(1)
+		.query(function(err, rows) {
 
 			if (err) {
-				callback(err);
+				callback(new data.Error('Failed', { code: engine.statuscode.SYSERR }));
 				return;
 			}
 
-			// Initializing session
-			data.req.session._id = row._id;
-			data.req.session.name = info.name;
-			data.req.session.username = info.username;
-			data.req.session.email = info.email;
+			if (rows.length) {
+				callback(new data.Error('Failed', { code: engine.statuscode.EXISTS }));
+				return;
+			}
 
-			callback(null, row);
+
+			// Write to database
+			db.open(dbSettings.dbName)
+				.collection(dbSettings.table)
+				.model(model.schema)
+				.insert({
+					name: info.displayname,
+					email: info.email,
+					password: crypto.createHmac('sha256', info.password).digest('hex'),
+					created: new Date().getTime()
+				}, function(err, row) {
+
+					if (err) {
+						callback(new data.Error('Failed', { code: engine.statuscode.SYSERR }));
+						return;
+					}
+
+					// Initializing session
+					data.req.session._id = row._id;
+					data.req.session.name = info.displayname;
+					data.req.session.email = info.email;
+
+					// Send information back
+					callback(null, {
+						_id: row._id,
+						name: info.displayname,
+						email: info.email
+					});
+				});
 		});
-*/
 };

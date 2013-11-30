@@ -10,25 +10,24 @@ block body
 
 			div.ui.fluid.form
 				h1.ui.dividing.header Sign Up
+				div.ui.error.message
+					div.header
+					p
 
 				div.field#signup_field_displayname
 					label Pick a display name
-					input#signup_displayname(type='text', placeholder='Fred Chien')
-					div.ui.red.pointing.above.label.transition.hidden
+					input#signup_displayname(type='text', name='name', placeholder='Fred Chien')
 
 				div.field#signup_field_email
 					label Enter your Email
-					input#signup_email(type='text', placeholder='fred@mandice.com')
-					div.ui.red.pointing.above.label.transition.hidden
+					input#signup_email(type='text', name='email', placeholder='fred@mandice.com')
 
 				div.field#signup_field_password
 					label Type your password
-					input#signup_password(type='password')
-					div.ui.red.pointing.above.label.transition.hidden
+					input#signup_password(type='password', name='password')
 
 				div.field#signup_field_confirm_password
 					label Confirm password
-					input#signup_confirm_password(type='password')
-					div.ui.red.pointing.above.label.transition.hidden
+					input#signup_confirm_password(type='password', name='confirm-password')
 
 				div.ui.purple.submit.button#signup_submit_btn Create an account

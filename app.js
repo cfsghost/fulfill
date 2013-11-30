@@ -2,8 +2,8 @@
 
 var path = require('path');
 var Frex = require('frex.js');
-var validator = require('validator');
 var ConfigManager = require('./lib/config_manager');
+var Validator = require('./lib/validator');
 
 var app = Frex();
 
@@ -32,7 +32,8 @@ configManager.load(function(err, configs) {
 
 		// Validator
 		app.use(function(req, res, next) {
-			req.validator = validator;
+
+			req.validator = new Validator();
 
 			next();
 		});

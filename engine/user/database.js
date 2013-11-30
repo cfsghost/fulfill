@@ -1,6 +1,5 @@
 "use strict";
 
-var crypto = require('crypto');
 var DBHouse = require('dbhouse');
 
 var dbSettings = {
@@ -18,18 +17,12 @@ var model = {
 	schema: new DBHouse.Schema({
 		_id: { type: 'UUID' },
 		name: { type: 'String' },
-		username: { type: 'String' },
 		email: { type: 'String' },
 		password: { type: 'String' },
-		projects: {
-			type: 'Array',
-			subtype: 'UUID'
-		},
 		created: { type: 'Date' }
 	}),
 	index: new DBHouse.Index([
 	    { fields: [ 'name' ] },
-	    { fields: [ 'username' ] },
 	    { fields: [ 'email' ] },
 	    { fields: [ 'created' ] }
 	])
