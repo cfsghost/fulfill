@@ -11,24 +11,11 @@ App.require('User', function() {
 		var username = $('#signin_username').val();
 		var password = $('#signin_password').val();
 
-		// Empty
-		if (username == '' || password == '') {
+		$('#signin_submit_btn').addClass('disabled');
 
-			// Highlight fields
-			$('#signin_field_username').addClass('error');
-			$('#signin_field_password').addClass('error');
-			$('#signin_field_username .label').text('Please enter username correctly.').transition('fade');
-			$('#signin_field_password .label').text('Please enter password correctly.').transition('fade in');
+		function errHandling(delay) {
 
-			// Focus on username input box
-			$('#signin_username').focus();
-
-			return;
-		}
-
-		// Authroization
-		user.auth(username, password, function(success) {
-			if (!success) {
+			setTimeout(function() {
 
 				// Highlight fields
 				$('#signin_field_username').addClass('error');
@@ -36,11 +23,29 @@ App.require('User', function() {
 				$('#signin_field_username .label').text('Please enter username correctly.').transition('fade in');
 				$('#signin_field_password .label').text('Please enter password correctly.').transition('fade in');
 
-				// Focus on username input box
-				$('#signin_username').select().focus();
+				$('#signin_submit_btn').removeClass('disabled');
 
+				// Focus on username input box
+				$('#signin_username').focus();
+			}, delay);
+		}
+
+		// Empty
+		if (username == '' || password == '') {
+			errHandling(0);
+			return;
+		}
+
+		// Authroization
+		user.auth(username, password, function(success) {
+
+			if (!success) {
+				errHandling(1000);
 				return;
 			}
+
+			// Success then redirect to home
+			window.location = '/';
 
 		});
 	});
