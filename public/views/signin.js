@@ -17,6 +17,8 @@ App.require('User', function() {
 			// Highlight fields
 			$('#signin_field_username').addClass('error');
 			$('#signin_field_password').addClass('error');
+			$('#signin_field_username .label').text('Please enter username correctly.').transition('fade');
+			$('#signin_field_password .label').text('Please enter password correctly.').transition('fade in');
 
 			// Focus on username input box
 			$('#signin_username').focus();
@@ -31,6 +33,8 @@ App.require('User', function() {
 				// Highlight fields
 				$('#signin_field_username').addClass('error');
 				$('#signin_field_password').addClass('error');
+				$('#signin_field_username .label').text('Please enter username correctly.').transition('fade in');
+				$('#signin_field_password .label').text('Please enter password correctly.').transition('fade in');
 
 				// Focus on username input box
 				$('#signin_username').select().focus();
