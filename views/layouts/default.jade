@@ -9,6 +9,11 @@ html
 		script(type='text/javascript', src='/frex')
 		script(type='text/javascript', src='/js/jquery.min.js')
 		script(type='text/javascript', src='/js/semantic.min.js')
+		script
+			$(function() {
+				$('.popup').popup();
+				$('.dropdown').dropdown();
+			});
 		block script
 	body
 
@@ -17,12 +22,18 @@ html
 				div.ui.menu.inverted.secondary.pointing.active
 					a.header.item(href='/') #{configs.app.service_name}
 
-					- if (session.name)
-						a.item.right.popup(href='/signin', data-position='bottom center', data-variation='inverted')
-							i.user.icon
-							span #{session.name}
-					- else
-						a.item.right.popup(href='/signin', data-content='Sign In right now', data-position='bottom center', data-variation='inverted') Sign In
+					div.right.menu
+						- if (session.name)
+							div.ui.dropdown.item
+								i.user.icon
+								!= session.name
+								i.dropdown.icon
+								div.menu
+									a.item(href='/signout')
+										i.sign.out.icon
+										!='Sign Out'
+						- else
+							a.item.popup(href='/signin', data-content='Sign In right now', data-position='bottom center', data-variation='inverted') Sign In
 
 				block information
 

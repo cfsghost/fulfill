@@ -2,8 +2,6 @@
 App.require('User', function() {
 	var user = App.Engine('User');
 
-	$('.popup').popup();
-
 	// Focus on username input box by default
 	$('#signin_username').focus();
 
