@@ -17,7 +17,12 @@ html
 				div.ui.menu.inverted.secondary.pointing.active
 					a.header.item(href='/') #{configs.app.service_name}
 
-					a.item.right.popup(href='/signin', data-content='Sign In right now', data-position='bottom center', data-variation='inverted') Sign In
+					- if (session.name)
+						a.item.right.popup(href='/signin', data-position='bottom center', data-variation='inverted')
+							i.user.icon
+							span #{session.name}
+					- else
+						a.item.right.popup(href='/signin', data-content='Sign In right now', data-position='bottom center', data-variation='inverted') Sign In
 
 				block information
 

@@ -29,6 +29,10 @@ configManager.load(function(err, configs) {
 			key: 'fulfill',
 			secret: app.locals.configs.app.secret_key
 		}));
+		app.use(function(req, res, next) {
+			res.locals.session = req.session;
+			next();
+		});
 
 		// Validator
 		app.use(function(req, res, next) {
