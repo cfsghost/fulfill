@@ -11,6 +11,15 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
+a {
+	color: #00BAFF;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #0085FF;
+}
+
 .ui.header {
 	font-family: 'Source Sans Pro', "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
