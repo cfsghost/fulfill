@@ -9,7 +9,7 @@ App.require('User', function() {
 		var username = $('#signin_username').val();
 		var password = $('#signin_password').val();
 
-		$('#signin_submit_btn').addClass('disabled');
+		$('#signin_submit_btn').addClass('disabled loading');
 
 		function errHandling(delay) {
 
@@ -21,7 +21,7 @@ App.require('User', function() {
 				$('#signin_field_username .label').text('Please enter username correctly.').transition('fade in');
 				$('#signin_field_password .label').text('Please enter password correctly.').transition('fade in');
 
-				$('#signin_submit_btn').removeClass('disabled');
+				$('#signin_submit_btn').removeClass('disabled loading');
 
 				// Focus on username input box
 				$('#signin_username').focus();
@@ -35,7 +35,7 @@ App.require('User', function() {
 		}
 
 		// Authroization
-		user.auth(username, password, function(success) {
+		user.auth(username, password, function(err, success) {
 
 			if (!success) {
 				errHandling(1000);

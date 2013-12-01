@@ -71,7 +71,7 @@ App.require('User', function() {
 
 					if (err) {
 
-						$('#signup_submit_btn').removeClass('loading');
+						$('#signup_submit_btn').removeClass('loading disabled');
 
 						if (err.name == 'Failed') {
 							$('#signup_field_email').addClass('error');
@@ -90,7 +90,7 @@ App.require('User', function() {
 
 	$('#signup_submit_btn').on('click', function() {
 
-		$('#signup_submit_btn').addClass('loading');
+		$('#signup_submit_btn').addClass('loading disabled');
 
 		$('.ui.error.message').addClass('hidden');
 	});

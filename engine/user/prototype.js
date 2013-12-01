@@ -9,6 +9,11 @@ var User = module.exports = function(frex, engine) {
 User.prototype.auth = function(username, password, callback, data) {
 	var self = this;
 
+	var engine = data.engine;
+	var model = engine.database.model;
+	var db = engine.database.db;
+	var dbSettings = engine.database.settings;
+
 	db.open(dbSettings.dbName)
 		.collection(dbSettings.table)
 		.model(model.schema)
@@ -41,7 +46,6 @@ User.prototype.auth = function(username, password, callback, data) {
 			// Initializing session
 			data.req.session._id = row._id;
 			data.req.session.name = row.name;
-			data.req.session.username = row.username;
 			data.req.session.email = row.email;
 
 			callback(null, true);
