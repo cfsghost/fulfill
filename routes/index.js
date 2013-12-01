@@ -16,5 +16,8 @@ module.exports = {
 			res.redirect('/');
 			res.end();
 		}, { req: req, res: res });
-	}
+	},
+	'/forget': function(req, res) {
+		res.render('forget');
+	},
 };

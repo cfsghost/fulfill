@@ -12,9 +12,9 @@ block body
 				h1.ui.dividing.header Sign In
 
 				div.field#signin_field_username
-					label Username
+					label Username or e-mail
 					div.ui.left.icon.input
-						input#signin_username(type='text', placeholder='fred@mandice.com')
+						input#signin_username(type='text', placeholder='username@example.com')
 						i.user.icon
 					div.ui.red.pointing.above.label.transition.hidden
 
@@ -33,4 +33,5 @@ block body
 					div No account?
 						!=' '
 						a(href='/signup') Sign Up!
-					div Forget your password?
+					div
+						a(href='/forget') Forget your password?

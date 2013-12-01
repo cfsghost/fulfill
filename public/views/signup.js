@@ -22,11 +22,11 @@ App.require('User', function() {
 				rules: [
 					{
 						type: 'empty',
-						prompt: 'Please enter your email'
+						prompt: 'Please enter your e-mail'
 					},
 					{
 						type: 'email',
-						prompt: 'Please enter valid email'
+						prompt: 'Please enter valid e-mail'
 					}
 				]
 			},

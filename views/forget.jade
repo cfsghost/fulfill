@@ -1,0 +1,21 @@
+extends layouts/default
+
+block script
+	script(type='text/javascript', src='/views/forget.js')
+
+block body
+	div.ui.page.grid.segment
+		div.ui.four.wide.column
+		div.eight.wide.column
+
+			div.ui.fluid.form
+				h1.ui.dividing.header Forget Password?
+				div.ui.error.message
+					div.header
+					p
+
+				div.field#forget_field_email
+					label Enter your e-mail
+					input#forget_email(type='text', name='email', placeholder='username@example.com')
+
+				div.ui.purple.submit.button#forget_submit_btn Submit
