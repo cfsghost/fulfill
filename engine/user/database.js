@@ -19,6 +19,7 @@ var model = {
 		name: { type: 'String' },
 		email: { type: 'String' },
 		password: { type: 'String' },
+		token: { type: 'String' },
 		created: { type: 'Date' }
 	}),
 	index: new DBHouse.Index([

@@ -2,8 +2,12 @@
 
 var crypto = require('crypto');
 
-var User = module.exports = function(frex, engine) {
+var engine = null;
+
+var User = module.exports = function(frex, _engine) {
 	var self = this;
+
+	engine = _engine;
 };
 
 User.prototype.auth = function(username, password, callback, data) {
@@ -52,6 +56,88 @@ User.prototype.auth = function(username, password, callback, data) {
 		});
 };
 
+User.prototype.resetPasswordWithToken = function(username, token, password, callback, data) {
+	var self = this;
+
+	if (!username || !token || !password) {
+		callback(new data.Error('Failed', engine.statuscode.SYSERR));
+		return;
+	}
+
+	var model = engine.database.model;
+	var db = engine.database.db;
+	var dbSettings = engine.database.settings;
+
+	// Update password and clear token
+	db.open(dbSettings.dbName)
+		.collection(dbSettings.table)
+		.model(model.schema)
+		.where({
+			email: username,
+			token: token
+		})
+		.limit(1)
+		.update({
+			password: crypto.createHmac('sha256', password).digest('hex'),
+			token: ''
+		}, { return_new_data: true } ,function(err, rows) {
+
+			if (err) {
+				callback(new data.Error('Failed', engine.statuscode.SYSERR));
+				return;
+			}
+
+			// Incorrect token or username doesn't exists
+			if (!rows) {
+				callback(new data.Error('Failed', engine.statuscode.INVALID));
+				return;
+			}
+
+			callback(null);
+		});
+	
+};
+
+User.prototype.generateToken = function(username, callback) {
+	var self = this;
+
+	// Generate secure rendom token
+	crypto.randomBytes(48, function(ex, buf) {
+		var token = buf.toString('hex');
+
+		var model = engine.database.model;
+		var db = engine.database.db;
+		var dbSettings = engine.database.settings;
+
+		// Saving token
+		db.open(dbSettings.dbName)
+			.collection(dbSettings.table)
+			.model(model.schema)
+			.where({
+				email: username
+			})
+			.limit(1)
+			.update({
+				token: token
+			}, { return_new_data: true } ,function(err, rows) {
+
+				if (err) {
+					callback(new data.Error('Failed', engine.statuscode.SYSERR));
+					return;
+				}
+
+				// username doesn't exists
+				if (!rows) {
+					callback(new data.Error('Failed', engine.statuscode.INVALID));
+					return;
+				}
+
+				// TODO: send token to specific e-mail
+				callback(null);
+			});
+	});
+};
+
 User.prototype.signOut = function(callback, data) {
 	if (!data.req.session)
 		data.req.session = {};
@@ -95,11 +181,16 @@ User.prototype.getMyInfo = function(callback, data) {
 
 User.prototype.getInfo = function(username, callback, data) {
 
+	var model = engine.database.model;
+	var db = engine.database.db;
+	var dbSettings = engine.database.settings;
+	var validator = data.req.validator;
+
 	db.open(dbSettings.dbName)
 		.collection(dbSettings.table)
 		.model(model.schema)
 		.where({
-			username: username
+			email: username
 		})
 		.limit(1)
 		.query(function(err, rows) {
@@ -118,7 +209,6 @@ User.prototype.getInfo = function(username, callback, data) {
 			callback(null, {
 				name: rows[0].name,
 				email: rows[0].email,
-				username: rows[0].username,
 				created: rows[0].created
 			});
 
@@ -128,7 +218,6 @@ User.prototype.getInfo = function(username, callback, data) {
 User.prototype.signUp = function(info, callback, data) {
 	var self = this;
 
-	var engine = data.engine;
 	var model = engine.database.model;
 	var db = engine.database.db;
 	var dbSettings = engine.database.settings;
@@ -169,12 +258,12 @@ User.prototype.signUp = function(info, callback, data) {
 		.query(function(err, rows) {
 
 			if (err) {
-				callback(new data.Error('Failed', { code: engine.statuscode.SYSERR }));
+				callback(new data.Error('Failed', engine.statuscode.SYSERR));
 				return;
 			}
 
 			if (rows.length) {
-				callback(new data.Error('Failed', { code: engine.statuscode.EXISTS }));
+				callback(new data.Error('Failed', engine.statuscode.EXISTS));
 				return;
 			}
 
@@ -191,7 +280,7 @@ User.prototype.signUp = function(info, callback, data) {
 				}, function(err, row) {
 
 					if (err) {
-						callback(new data.Error('Failed', { code: engine.statuscode.SYSERR }));
+						callback(new data.Error('Failed', engine.statuscode.SYSERR));
 						return;
 					}
 

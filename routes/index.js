@@ -20,4 +20,11 @@ module.exports = {
 	'/forget': function(req, res) {
 		res.render('forget');
 	},
+	'/reset_password/:username/:token': function(req, res) {
+
+		res.render('reset_password', {
+			username: req.params.username,
+			token: req.params.token
+		});
+	}
 };
