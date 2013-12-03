@@ -5,6 +5,21 @@ App.require('User', function() {
 	// Focus on username input box by default
 	$('#signin_username').focus();
 
+	// Enter event
+	$('#signin_field_username').on('keydown', function(event) {
+		if (event.keyCode == 13) {
+			if (!$('#signin_submit_btn').hasClass('disabled'))
+				$('#signin_submit_btn').trigger('click');
+		}
+	});
+
+	$('#signin_field_password').on('keydown', function(event) {
+		if (event.keyCode == 13) {
+			if (!$('#signin_submit_btn').hasClass('disabled'))
+				$('#signin_submit_btn').trigger('click');
+		}
+	});
+
 	$('#signin_submit_btn').on('click', function() {
 		var username = $('#signin_username').val();
 		var password = $('#signin_password').val();
@@ -15,11 +30,13 @@ App.require('User', function() {
 
 			setTimeout(function() {
 
+				$('.ui.error.message .header').text('Failed to sign in');
+				$('.ui.error.message p').text('Please enter correct username and password.');
+				$('.ui.error.message').transition('fade in');
+
 				// Highlight fields
 				$('#signin_field_username').addClass('error');
 				$('#signin_field_password').addClass('error');
-				$('#signin_field_username .label').text('Please enter username correctly.').transition('fade in');
-				$('#signin_field_password .label').text('Please enter password correctly.').transition('fade in');
 
 				$('#signin_submit_btn').removeClass('disabled');
 
