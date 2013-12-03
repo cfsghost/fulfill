@@ -2,18 +2,15 @@
 
 var crypto = require('crypto');
 
-var engine = null;
-
-var User = module.exports = function(frex, _engine) {
+var User = module.exports = function() {
 	var self = this;
-
-	engine = _engine;
 };
 
-User.prototype.auth = function(username, password, callback, data) {
+User.prototype.auth = function(username, password, callback) {
 	var self = this;
 
-	var engine = data.engine;
+	var conn = User.frex.getConnection(arguments);
+	var engine = User.engine;
 	var model = engine.database.model;
 	var db = engine.database.db;
 	var dbSettings = engine.database.settings;
@@ -28,7 +25,7 @@ User.prototype.auth = function(username, password, callback, data) {
 		.query(function(err, rows) {
 
 			if (err) {
-				callback(new Error('There is problem happened to user database'));
+				callback(new User.frex.Error('There is problem happened to user database'));
 				return;
 			}
 
@@ -48,19 +45,22 @@ User.prototype.auth = function(username, password, callback, data) {
 			}
 
 			// Initializing session
-			data.req.session._id = row._id;
-			data.req.session.name = row.name;
-			data.req.session.email = row.email;
+			conn.req.session._id = row._id;
+			conn.req.session.name = row.name;
+			conn.req.session.email = row.email;
 
 			callback(null, true);
 		});
 };
 
-User.prototype.resetPasswordWithToken = function(username, token, password, callback, data) {
+User.prototype.resetPasswordWithToken = function(username, token, password, callback) {
 	var self = this;
 
+	var conn = User.frex.getConnection(arguments);
+	var engine = User.engine;
+
 	if (!username || !token || !password) {
-		callback(new data.Error('Failed', engine.statuscode.SYSERR));
+		callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
 		return;
 	}
 
@@ -83,13 +83,13 @@ User.prototype.resetPasswordWithToken = function(username, token, password, call
 		}, { return_new_data: true } ,function(err, rows) {
 
 			if (err) {
-				callback(new data.Error('Failed', engine.statuscode.SYSERR));
+				callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
 				return;
 			}
 
 			// Incorrect token or username doesn't exists
 			if (!rows) {
-				callback(new data.Error('Failed', engine.statuscode.INVALID));
+				callback(new User.frex.Error('Failed', engine.statuscode.INVALID));
 				return;
 			}
 
@@ -105,6 +105,7 @@ User.prototype.generateToken = function(username, callback) {
 	crypto.randomBytes(48, function(ex, buf) {
 		var token = buf.toString('hex');
 
+		var engine = User.engine;
 		var model = engine.database.model;
 		var db = engine.database.db;
 		var dbSettings = engine.database.settings;
@@ -122,13 +123,13 @@ User.prototype.generateToken = function(username, callback) {
 			}, { return_new_data: true } ,function(err, rows) {
 
 				if (err) {
-					callback(new data.Error('Failed', engine.statuscode.SYSERR));
+					callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
 					return;
 				}
 
 				// username doesn't exists
 				if (!rows) {
-					callback(new data.Error('Failed', engine.statuscode.INVALID));
+					callback(new User.frex.Error('Failed', engine.statuscode.INVALID));
 					return;
 				}
 
@@ -138,22 +139,26 @@ User.prototype.generateToken = function(username, callback) {
 	});
 };
 
-User.prototype.signOut = function(callback, data) {
-	if (!data.req.session)
-		data.req.session = {};
+User.prototype.signOut = function(callback) {
 
-	data.req.session._id = null;
-	data.req.session.name = null;
-	data.req.session.username = null;
-	data.req.session.email = null;
+	var conn = User.frex.getConnection(arguments);
+
+	if (!conn.req.session)
+		conn.req.session = {};
+
+	conn.req.session._id = null;
+	conn.req.session.name = null;
+	conn.req.session.email = null;
 
 	callback(null);
 };
 
-User.prototype.isLogin = function(callback, data) {
+User.prototype.isLogin = function(callback) {
+
+	var conn = User.frex.getConnection(arguments);
 
 	try {
-		if (data.req.session.username) {
+		if (conn.req.session.username) {
 
 			callback(true);
 			return;
@@ -164,27 +169,31 @@ User.prototype.isLogin = function(callback, data) {
 	callback(false);
 };
 
-User.prototype.getMyInfo = function(callback, data) {
+User.prototype.getMyInfo = function(callback) {
+
+	var conn = User.frex.getConnection(arguments);
 
 	// Login is required
-	if (!data.req.session.username) {
-		callback(new Error('No permission to access'));
+	if (!conn.req.session.username) {
+		callback(new User.frex.Error('No permission to access'));
 		return;
 	}
 
 	callback(null, {
-		name: data.req.session.name,
-		username: data.req.session.username,
-		email: data.req.session.email
+		name: conn.req.session.name,
+		email: conn.req.session.email
 	});
 };
 
-User.prototype.getInfo = function(username, callback, data) {
+User.prototype.getInfo = function(username, callback) {
 
+	var conn = User.frex.getConnection(arguments);
+ 
+	var engine = User.engine;
 	var model = engine.database.model;
 	var db = engine.database.db;
 	var dbSettings = engine.database.settings;
-	var validator = data.req.validator;
+	var validator = conn.req.validator;
 
 	db.open(dbSettings.dbName)
 		.collection(dbSettings.table)
@@ -196,13 +205,13 @@ User.prototype.getInfo = function(username, callback, data) {
 		.query(function(err, rows) {
 
 			if (err) {
-				callback(new Error('There is problem happened to user database'));
+				callback(new User.frex.Error('There is problem happened to user database'));
 				return;
 			}
 
 			// No such user
 			if (rows.length == 0) {
-				callback(new Error('No such user'));
+				callback(new User.frex.Error('No such user'));
 				return;
 			}
 
@@ -215,13 +224,16 @@ User.prototype.getInfo = function(username, callback, data) {
 		});
 };
 
-User.prototype.signUp = function(info, callback, data) {
+User.prototype.signUp = function(info, callback) {
 	var self = this;
 
+	var conn = User.frex.getConnection(arguments);
+
+	var engine = User.engine;
 	var model = engine.database.model;
 	var db = engine.database.db;
 	var dbSettings = engine.database.settings;
-	var validator = data.req.validator;
+	var validator = conn.req.validator;
 
 	// Check display name
 	validator.checkObject(info, 'displayname', {
@@ -240,7 +252,7 @@ User.prototype.signUp = function(info, callback, data) {
 
 	var errors = validator.getObjectErrors();
 	if (errors) {
-		callback(new data.Error('FieldError', errors));
+		callback(new User.frex.Error('FieldError', errors));
 		return;
 	}
 
@@ -258,12 +270,12 @@ User.prototype.signUp = function(info, callback, data) {
 		.query(function(err, rows) {
 
 			if (err) {
-				callback(new data.Error('Failed', engine.statuscode.SYSERR));
+				callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
 				return;
 			}
 
 			if (rows.length) {
-				callback(new data.Error('Failed', engine.statuscode.EXISTS));
+				callback(new User.frex.Error('Failed', engine.statuscode.EXISTS));
 				return;
 			}
 
@@ -280,14 +292,14 @@ User.prototype.signUp = function(info, callback, data) {
 				}, function(err, row) {
 
 					if (err) {
-						callback(new data.Error('Failed', engine.statuscode.SYSERR));
+						callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
 						return;
 					}
 
 					// Initializing session
-					data.req.session._id = row._id;
-					data.req.session.name = info.displayname;
-					data.req.session.email = info.email;
+					conn.req.session._id = row._id;
+					conn.req.session.name = info.displayname;
+					conn.req.session.email = info.email;
 
 					// Send information back
 					callback(null, {

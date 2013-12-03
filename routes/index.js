@@ -15,7 +15,7 @@ module.exports = {
 		user.signOut(function() {
 			res.redirect('/');
 			res.end();
-		}, { req: req, res: res });
+		}, req.conn);
 	},
 	'/forget': function(req, res) {
 		res.render('forget');
