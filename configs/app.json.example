@@ -12,7 +12,7 @@
 		"ssl": true,
 		"auth": {
 			"user": "youruser@gmail.com",
-			"password: ""yourpassword"
+			"password": "yourpassword"
 		}
 	}
 }
