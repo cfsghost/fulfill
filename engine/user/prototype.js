@@ -105,7 +105,7 @@ User.prototype.generateToken = function(username, callback) {
 	var conn = User.frex.getConnection(arguments);
 
 	// Generate secure rendom token
-	crypto.randomBytes(48, function(ex, buf) {
+	crypto.randomBytes(16, function(ex, buf) {
 		var token = buf.toString('hex');
 
 		var engine = User.engine;
