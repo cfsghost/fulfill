@@ -57,6 +57,9 @@ App.require('User', function() {
 			on: 'blur',
 			onSuccess: function() {
 
+				if ($('#signup_submit_btn').hasClass('disabled'))
+					return;
+
 				var displayName = $('#signup_displayname').val();
 				var email = $('#signup_email').val();
 				var password = $('#signup_password').val();

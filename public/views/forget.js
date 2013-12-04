@@ -26,26 +26,29 @@ App.require('User', function() {
 			on: 'blur',
 			onSuccess: function() {
 
-				return;
+				if ($('#forget_submit_btn').hasClass('disabled'))
+					return;
+
 				var email = $('#forget_email').val();
 
-				// Sign up now
-				user.signUp({
-					displayname: displayName,
-					email: email,
-					password: password
-				}, function(err) {
+				// Request to reset password right now
+				user.generateToken(email, function(err) {
 
 					if (err) {
 
-						$('#forget_submit_btn').removeClass('loading disabled');
+						// Delay 1 second to avoid that user retry with high frequency
+						setTimeout(function() {
 
-						if (err.name == 'Failed') {
-							$('#forget_field_email').addClass('error');
-							$('.ui.error.message .header').text('Failed to sign up');
-							$('.ui.error.message p').text('Your Email exists already.');
-							$('.ui.error.message').transition('fade in');
-						}
+							$('#forget_submit_btn').removeClass('disabled');
+
+							if (err.name == 'Failed') {
+								$('#forget_field_email').addClass('error');
+								$('.ui.error.message .header').text('Failed to request');
+								$('.ui.error.message p').text('You must enter a correct e-mail');
+								$('.ui.error.message').transition('fade in');
+							}
+
+						}, 1000);
 						return;
 					}
 
@@ -57,7 +60,7 @@ App.require('User', function() {
 
 	$('#forget_submit_btn').on('click', function() {
 
-		$('#forget_submit_btn').addClass('loading disabled');
+		$('#forget_submit_btn').addClass('disabled');
 
 		$('.ui.error.message').addClass('hidden');
 	});

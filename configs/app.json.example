@@ -6,13 +6,17 @@
 		"name": "Fulfill, Inc."
 	},
 	"mailer": {
-		"protocol": "smtp",
+		"type": "smtp",
 		"host": "smtp.gmail.com",
 		"port": 465,
 		"ssl": true,
 		"auth": {
 			"user": "youruser@gmail.com",
 			"password": "yourpassword"
+		},
+		"from": {
+			"name": "Fill Web Service",
+			"address": "youruser@gmail.com"
 		}
 	}
 }

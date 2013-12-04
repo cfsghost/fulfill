@@ -37,6 +37,7 @@ module.exports = {
 		SYSERR: -1,
 		EMPTY: 0,
 		INVALID: 1,
-		EXISTS: 2
+		EXISTS: 2,
+		NONEXIST: 3
 	}
 };

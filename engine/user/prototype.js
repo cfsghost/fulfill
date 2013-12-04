@@ -1,6 +1,7 @@
 "use strict";
 
 var crypto = require('crypto');
+var mailer = require('nodemailer');
 
 var User = module.exports = function() {
 	var self = this;
@@ -101,6 +102,8 @@ User.prototype.resetPasswordWithToken = function(username, token, password, call
 User.prototype.generateToken = function(username, callback) {
 	var self = this;
 
+	var conn = User.frex.getConnection(arguments);
+
 	// Generate secure rendom token
 	crypto.randomBytes(48, function(ex, buf) {
 		var token = buf.toString('hex');
@@ -120,20 +123,41 @@ User.prototype.generateToken = function(username, callback) {
 			.limit(1)
 			.update({
 				token: token
-			}, { return_new_data: true } ,function(err, rows) {
+			}, { return_new_data: true } ,function(err, record) {
 
 				if (err) {
 					callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
 					return;
 				}
 
-				// username doesn't exists
-				if (!rows) {
-					callback(new User.frex.Error('Failed', engine.statuscode.INVALID));
+				if (!record) {
+					callback(new User.frex.Error('Failed', engine.statuscode.NONEXIST));
 					return;
 				}
+				
+				// Sending token to specific e-mail
+				var mailerConfig = conn.res.locals.configs.app.mailer;
+				var transport = mailer.createTransport("SMTP", {
+					host: mailerConfig.host,
+					port: mailerConfig.port,
+					secureConnection: mailerConfig.ssl,
+					auth: {
+						user: mailerConfig.auth.user,
+						pass: mailerConfig.auth.password
+					}
+				});
 
-				// TODO: send token to specific e-mail
+				transport.sendMail({
+					from: mailerConfig.from.name + ' <' + mailerConfig.from.address + '>',
+					to: record.name + ' <' + record.email + '>',
+					subject: 'You requested a new ' + conn.res.locals.configs.app.service_name + ' password',
+					html: '<p>You\'re receiving this e-mail because you requested a password reset for your user account at ' +
+						conn.res.locals.configs.app.service_name + '.</p>' +
+						'<p>Please go to the following link and choose a new password:</p>' +
+						'<p><a href=\'http:\/\/localhost:50714\/reset_password\/' + record.email + '\/' + token + '\'>' +
+						'http:\/\/localhost:50714\/reset_password\/' + record.email + '\/' + token + '</a></p>'
+				});
+
 				callback(null);
 			});
 	});
