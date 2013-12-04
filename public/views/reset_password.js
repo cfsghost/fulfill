@@ -57,7 +57,13 @@ App.require('User', function() {
 						return;
 					}
 
-					alert('Success');
+					// Hide form
+					$('#reset_password_form').fadeOut();
+
+					// Show off success message
+					$('.ui.success.message .header').text('Reset Password Successful');
+					$('.ui.success.message p').text('Your password has been reset successfully!');
+					$('.ui.success.message').transition('fade in');
 				});
 			}
 		});
