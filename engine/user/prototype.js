@@ -54,13 +54,13 @@ User.prototype.auth = function(username, password, callback) {
 		});
 };
 
-User.prototype.resetPasswordWithToken = function(username, token, password, callback) {
+User.prototype.resetPasswordWithToken = function(id, token, password, callback) {
 	var self = this;
 
 	var conn = User.frex.getConnection(arguments);
 	var engine = User.engine;
 
-	if (!username || !token || !password) {
+	if (!id || !token || !password) {
 		callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
 		return;
 	}
@@ -74,7 +74,7 @@ User.prototype.resetPasswordWithToken = function(username, token, password, call
 		.collection(dbSettings.table)
 		.model(model.schema)
 		.where({
-			email: username,
+			_id: id,
 			token: token
 		})
 		.limit(1)
@@ -134,9 +134,11 @@ User.prototype.generateToken = function(username, callback) {
 					callback(new User.frex.Error('Failed', engine.statuscode.NONEXIST));
 					return;
 				}
+
+				var configs = conn.res.locals.configs;
 				
 				// Sending token to specific e-mail
-				var mailerConfig = conn.res.locals.configs.app.mailer;
+				var mailerConfig = configs.app.mailer;
 				var transport = mailer.createTransport("SMTP", {
 					host: mailerConfig.host,
 					port: mailerConfig.port,
@@ -147,15 +149,22 @@ User.prototype.generateToken = function(username, callback) {
 					}
 				});
 
+				var serviceHost = null;
+				if (configs.app.port == 80) {
+					serviceHost = 'http://' + configs.app.server_host;
+				} else {
+					serviceHost = 'http://' + configs.app.server_host + ':' + configs.app.port;
+				}
+
 				transport.sendMail({
 					from: mailerConfig.from.name + ' <' + mailerConfig.from.address + '>',
 					to: record.name + ' <' + record.email + '>',
-					subject: 'You requested a new ' + conn.res.locals.configs.app.service_name + ' password',
+					subject: 'You requested a new ' + configs.app.service_name + ' password',
 					html: '<p>You\'re receiving this e-mail because you requested a password reset for your user account at ' +
-						conn.res.locals.configs.app.service_name + '.</p>' +
+						configs.app.service_name + '.</p>' +
 						'<p>Please go to the following link and choose a new password:</p>' +
-						'<p><a href=\'http:\/\/localhost:50714\/reset_password\/' + record.email + '\/' + token + '\'>' +
-						'http:\/\/localhost:50714\/reset_password\/' + record.email + '\/' + token + '</a></p>'
+						'<p><a href=\'' + serviceHost + '/reset_password/' + record._id + '/' + token + '\'>' +
+						serviceHost + '/reset_password/' + record._id + '/' + token + '</a></p>'
 				});
 
 				callback(null);

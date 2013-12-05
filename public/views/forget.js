@@ -52,8 +52,16 @@ App.require('User', function() {
 						return;
 					}
 
+					// Hide form
+					$('#forget_form').fadeOut();
+
+					// Show off success message
+					$('.ui.success.message .header').text('Requested Password Reset');
+					$('.ui.success.message p').text('Please check your e-mail box. A message will be sent to that address containing a link to rest your password.');
+					$('.ui.success.message').transition('fade in');
+
 					// Success then redirect to home
-					window.location = '/';
+					//window.location = '/';
 				});
 			}
 		});

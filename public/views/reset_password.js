@@ -35,15 +35,15 @@ App.require('User', function() {
 			on: 'blur',
 			onSuccess: function() {
 
-				var username = $('.ui.form').form('get field', 'username').val();
+				var id = $('.ui.form').form('get field', 'id').val();
 				var token = $('.ui.form').form('get field', 'token').val();
 				var password = $('#reset_password_password').val();
 
-				if (!username || !token)
+				if (!id || !token)
 					return;
 
 				// Reset password
-				user.resetPasswordWithToken(username, token, password, function(err) {
+				user.resetPasswordWithToken(id, token, password, function(err) {
 
 					if (err) {
 						$('#reset_password_submit_btn').removeClass('disabled');

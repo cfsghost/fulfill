@@ -14,8 +14,13 @@ block body
 					div.header
 					p
 
-				div.field#forget_field_email
-					label Enter your e-mail
-					input#forget_email(type='text', name='email', placeholder='username@example.com')
+				div.ui.success.message.hidden
+					div.header
+					p
 
-				div.ui.purple.submit.button#forget_submit_btn Submit
+				div#forget_form
+					div.field#forget_field_email
+						label Enter your e-mail
+						input#forget_email(type='text', name='email', placeholder='username@example.com')
+
+					div.ui.purple.submit.button#forget_submit_btn Submit
