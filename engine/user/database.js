@@ -10,7 +10,6 @@ var dbSettings = {
 	table: 'user'
 };
 
-
 // Define schema
 var model = {
 

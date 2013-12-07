@@ -9,7 +9,7 @@ var constructor = function(engine, callback) {
 
 	var dbHouse = engine.database.dbHouse;
 	var model = engine.database.model;
-	var dbSettings = engine.database.settings;
+	var dbSettings = engine.settings.database;
 
 	// Connect to database
 	dbHouse.connect(dbSettings.driver, { host: dbSettings.host, port: dbSettings.port }, function() {

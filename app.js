@@ -16,8 +16,26 @@ configManager.load(function(err, configs) {
 	// Configuring
 	app.configure(function() {
 
+		// Configuring engines
+		app.frex.setEngine('User', {
+			database: {
+				driver: 'mongodb',
+				host: 'localhost',
+				port: 27017,
+				dbName: 'fulfill',
+				table: 'user'
+			},
+			service: {
+				service_name: configs.app.service_name,
+				server_host: configs.app.server_host
+			},
+			mailer: configs.app.mailer
+		});
+
+		// Template engine
 		app.set('views', __dirname + '/views');
 		app.set('view engine', 'jade');
+
 		app.use(function(req, res, next) {
 			res.locals.configs = app.locals.configs;
 			next();
@@ -36,7 +54,6 @@ configManager.load(function(err, configs) {
 
 		// Validator
 		app.use(function(req, res, next) {
-
 			req.validator = new Validator();
 
 			next();
