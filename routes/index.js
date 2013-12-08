@@ -2,6 +2,9 @@ module.exports = {
 	'/': function(req, res) {
 		res.render('index');
 	},
+	'/profile': function(req, res) {
+		res.render('profile');
+	},
 	'/signin': function(req, res) {
 		res.render('signin');
 	},

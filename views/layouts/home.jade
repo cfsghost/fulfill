@@ -17,25 +17,28 @@ html
 		block script
 	body
 
-		div.sidebar.top.fixed.navbar
-			div.ui.menu.secondary.pointing.inverted
-				a.item.header(href='/') #{configs.app.service_name}
+		div.ui.inverted.page.grid.masthead.segment
+			div.column
+				div.ui.menu.inverted.secondary.pointing.active
+					a.header.item(href='/') #{configs.app.service_name}
 
-				div.right.menu
-					- if (session.name)
-						div.ui.dropdown.item
-							i.user.icon
-							!= session.name
-							i.dropdown.icon
-							div.menu
-								a.item(href='/profile')
-									i.edit.icon
-									!='Edit Profile'
-								a.item(href='/signout')
-									i.sign.out.icon
-									!='Sign Out'
-					- else
-						a.item.popup(href='/signin', data-content='Sign In right now', data-position='bottom center', data-variation='inverted') Sign In
+					div.right.menu
+						- if (session.name)
+							div.ui.dropdown.item
+								i.user.icon
+								!= session.name
+								i.dropdown.icon
+								div.menu
+									a.item(href='/profile')
+										i.user.icon
+										!='Edit Profile'
+									a.item(href='/signout')
+										i.sign.out.icon
+										!='Sign Out'
+						- else
+							a.item.popup(href='/signin', data-content='Sign In right now', data-position='bottom center', data-variation='inverted') Sign In
+
+				block information
 
 		block body
 
