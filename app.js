@@ -27,7 +27,8 @@ configManager.load(function(err, configs) {
 			},
 			service: {
 				service_name: configs.app.service_name,
-				server_host: configs.app.server_host
+				server_host: configs.app.server_host,
+				port: configs.app.port
 			},
 			mailer: configs.app.mailer
 		});
