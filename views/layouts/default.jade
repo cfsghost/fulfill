@@ -25,7 +25,7 @@ html
 					- if (session.name)
 						div.ui.dropdown.item
 							i.user.icon
-							!= session.name
+							span#session_username #{session.name}
 							i.dropdown.icon
 							div.menu
 								a.item(href='/profile')

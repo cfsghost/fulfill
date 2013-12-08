@@ -189,7 +189,7 @@ User.prototype.isLogin = function(callback) {
 	var conn = User.frex.getConnection(arguments);
 
 	try {
-		if (conn.req.session.username) {
+		if (conn.req.session._id) {
 
 			callback(true);
 			return;
@@ -205,7 +205,7 @@ User.prototype.getMyInfo = function(callback) {
 	var conn = User.frex.getConnection(arguments);
 
 	// Login is required
-	if (!conn.req.session.username) {
+	if (!conn.req.session._id) {
 		callback(new User.frex.Error('No permission to access'));
 		return;
 	}
@@ -340,4 +340,67 @@ User.prototype.signUp = function(info, callback) {
 					});
 				});
 		});
+};
+
+User.prototype.editMyInfo = function(info, callback) {
+	var self = this;
+
+	var conn = User.frex.getConnection(arguments);
+
+	var engine = User.engine;
+
+	if (!conn.req.session) {
+		callback(new User.frex.Error('Failed', engine.statuscode.NOPERM));
+		return;
+	}
+
+	if (!conn.req.session._id) {
+		callback(new User.frex.Error('Failed', engine.statuscode.NOPERM));
+		return;
+	}
+
+	var model = engine.database.model;
+	var db = engine.database.db;
+	var dbSettings = engine.database.settings;
+	var validator = conn.req.validator;
+
+	// Check display name
+	validator.checkObject(info, 'displayname', {
+		notEmpty: engine.statuscode.EMPTY
+	}).notEmpty();
+
+	var errors = validator.getObjectErrors();
+	if (errors) {
+		callback(new User.frex.Error('FieldError', errors));
+		return;
+	}
+
+	// Modify info
+	db.open(dbSettings.dbName)
+		.collection(dbSettings.table)
+		.model(model.schema)
+		.where({
+			_id: conn.req.session._id
+		})
+		.limit(1)
+		.update({
+			name: info.displayname
+		}, { return_new_data: true } ,function(err, rows) {
+
+			if (err) {
+				callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
+				return;
+			}
+
+			// this user doesn't exists
+			if (!rows) {
+				callback(new User.frex.Error('Failed', engine.statuscode.INVALID));
+				return;
+			}
+
+			conn.req.session.name = info.displayname;
+
+			callback(null);
+		});
+	
 };

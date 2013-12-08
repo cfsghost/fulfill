@@ -38,6 +38,7 @@ module.exports = {
 		EMPTY: 0,
 		INVALID: 1,
 		EXISTS: 2,
-		NONEXIST: 3
+		NONEXIST: 3,
+		NOPERM: 4
 	}
 };
