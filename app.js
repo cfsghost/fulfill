@@ -46,7 +46,7 @@ configManager.load(function(err, configs) {
 		app.use(Frex.cookieParser());
 		app.use(Frex.cookieSession({
 			key: 'fulfill',
-			secret: app.locals.configs.app.secret_key
+			secret: configs.app.secret_key
 		}));
 		app.use(function(req, res, next) {
 			res.locals.session = req.session;
@@ -64,7 +64,7 @@ configManager.load(function(err, configs) {
 		app.use(Frex.static(__dirname + '/public'));
 	});
 
-	app.listen(app.locals.configs.app.port, function() {
+	app.listen(configs.app.port, function() {
 		console.log('website is ready.');
 	});
 });
