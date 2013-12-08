@@ -5,20 +5,22 @@ block script
 
 block body
 
+	input#email(type='hidden', value='#{session.email}')
+
 	div#profile
 
 		div.container
 			div.sidebar_menu
 				div.ui.secondary.vertical.pointing.menu.blue#sidebar_menu
-					a.item.active Profile
-					a.item Password
+					a.item(href='#profile', rel='profile') Profile
+					a.item(href='#password', rel='password') Password
 
-			div.ui.page.grid.segment
-				div.ui.four.wide.column
-				div.eight.wide.column
+			div.ui.page.grid.segment.transition#profile_page
+
+				div.column
 
 					div.ui.fluid.form
-						h1.ui.dividing.header Edit Profile
+						h1.ui.dividing.header User Profile
 						div.ui.error.message
 							div.header
 							p
@@ -27,9 +29,38 @@ block body
 							div.header
 							p
 
-						div#forget_form
-							div.field#forget_field_email
-								label Enter your e-mail
-								input#forget_email(type='text', name='email', placeholder='username@example.com')
+						div#profile_form
+							div.field
+								label Account:
+								div #{session.email}
 
-							div.ui.purple.submit.button#forget_submit_btn Submit
+							div.field#field_display_name
+								label Display name
+								input#form_email(type='text', name='display_name', placeholder='Your Display Name', value='#{session.name}')
+
+							div.ui.purple.submit.button#profile_save_btn Save
+
+			div.ui.page.grid.segment.transition.hidden#password_page
+
+				div.column
+
+					div.ui.fluid.form
+						h1.ui.dividing.header Change Password
+						div.ui.error.message
+							div.header
+							p
+
+						div.ui.success.message.hidden
+							div.header
+							p
+
+						div#password_form
+							div.field#field_password
+								label Enter your new password
+								input#form_password(type='password', name='password')
+
+							div.field#field_confirm_password
+								label Confirm password
+								input#form_confirm_password(type='password', name='confirm-password')
+
+							div.ui.purple.submit.button#password_submit_btn Reset Password
