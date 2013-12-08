@@ -1,26 +1,35 @@
 extends layouts/default
 
 block script
-	script(type='text/javascript', src='/views/forget.js')
+	script(type='text/javascript', src='/views/profile.js')
 
 block body
-	div.ui.page.grid.segment
-		div.ui.four.wide.column
-		div.eight.wide.column
 
-			div.ui.fluid.form
-				h1.ui.dividing.header User Profile
-				div.ui.error.message
-					div.header
-					p
+	div#profile
 
-				div.ui.success.message.hidden
-					div.header
-					p
+		div.container
+			div.sidebar_menu
+				div.ui.secondary.vertical.pointing.menu.blue#sidebar_menu
+					a.item.active Profile
+					a.item Password
 
-				div#forget_form
-					div.field#forget_field_email
-						label Enter your e-mail
-						input#forget_email(type='text', name='email', placeholder='username@example.com')
+			div.ui.page.grid.segment
+				div.ui.four.wide.column
+				div.eight.wide.column
 
-					div.ui.purple.submit.button#forget_submit_btn Submit
+					div.ui.fluid.form
+						h1.ui.dividing.header Edit Profile
+						div.ui.error.message
+							div.header
+							p
+
+						div.ui.success.message.hidden
+							div.header
+							p
+
+						div#forget_form
+							div.field#forget_field_email
+								label Enter your e-mail
+								input#forget_email(type='text', name='email', placeholder='username@example.com')
+
+							div.ui.purple.submit.button#forget_submit_btn Submit

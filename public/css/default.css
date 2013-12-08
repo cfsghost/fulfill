@@ -66,3 +66,18 @@ a:hover {
 	-webkit-box-shadow: 0 -20px 10px 0 rgba(0, 0, 0, 0.1) inset !important;
 	box-shadow: 0 -20px 10px 0 rgba(0, 0, 0, 0.1) inset !important;
 }
+
+@media only screen and (max-width: 1725px) {
+	#profile .container {
+		width: auto;
+		margin-right: 100px;
+		margin-left: 325px;
+	}
+}
+
+.sidebar_menu {
+	margin-top: 4em;
+	margin-left: 0px;
+	left: 95px;
+	position: fixed;
+}
