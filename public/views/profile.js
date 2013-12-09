@@ -29,7 +29,7 @@ App.require('User', function() {
 	// Switch to specific page with anchor
 	switchPage.bind($('#sidebar_menu').find('[rel=' + anchor + ']')[0])();
 
-	// Validator
+	// Validator for profile
 	$('#profile_page .ui.form')
 		.form({
 			name: {
@@ -46,9 +46,14 @@ App.require('User', function() {
 			on: 'blur',
 			onSuccess: function() {
 
+				// Set state of button and messages
+				$('#profile_save_submit_btn').addClass('disabled');
+				$('#profile_page .ui.error.message').addClass('hidden');
+				$('#profile_page .ui.success.message').addClass('hidden');
+
 				var name = $('#form_name').val();
 
-				// Reset password
+				// Editing user profile
 				user.editMyInfo({ displayname: name }, function(err) {
 
 					if (err) {
@@ -73,10 +78,67 @@ App.require('User', function() {
 			}
 		});
 
-	$('#profile_save_submit_btn').on('click', function() {
+	// Validator for change password
+	$('#password_page .ui.form')
+		.form({
+			password: {
+				identifier: 'password',
+				rules: [
+					{
+						type: 'empty',
+						prompt: 'Please enter your password'
+					}
+				]
+			},
+			confirmPassword: {
+				identifier: 'confirm-password',
+				rules: [
+					{
+						type: 'empty',
+						prompt: 'Please enter your password again'
+					},
+					{
+						type: 'match[password]',
+						prompt: 'Password doesn\'t match'
+					}
+				]
+			}
+		}, {
+			inline: true,
+			on: 'blur',
+			onSuccess: function() {
 
-		$('#profile_save_submit_btn').addClass('disabled');
+				// Set state of butten and messages
+				$('#password_save_submit_btn').addClass('disabled');
+				$('#password_page .ui.error.message').addClass('hidden');
+				$('#password_page .ui.success.message').addClass('hidden');
 
-		$('#profile_page .ui.error.message').addClass('hidden');
-	});
+				var password = $('#form_password').val();
+
+				// Change password
+				user.resetMyPassword(password, function(err) {
+
+					if (err) {
+						$('#password_save_submit_btn').removeClass('disabled');
+
+						if (err.name == 'Failed') {
+							$('#password_page .ui.error.message .header').text('Failed');
+							$('#password_page .ui.error.message p').text('System has problems');
+							$('#password_page .ui.error.message').transition('fade in');
+						}
+
+						return;
+					}
+
+					// Clear input box
+					$('#form_password').val('');
+					$('#form_confirm_password').val('');
+
+					// Show off success message
+					$('#password_page .ui.success.message .header').text('Update Successful');
+					$('#password_page .ui.success.message p').text('Your password was saved.');
+					$('#password_page .ui.success.message').transition('fade in');
+				});
+			}
+		});
 });

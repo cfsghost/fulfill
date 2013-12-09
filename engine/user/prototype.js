@@ -54,6 +54,59 @@ User.prototype.auth = function(username, password, callback) {
 		});
 };
 
+User.prototype.resetMyPassword = function(password, callback) {
+	var self = this;
+
+	var conn = User.frex.getConnection(arguments);
+	var engine = User.engine;
+
+	if (!password || typeof password !== 'string') {
+		callback(new User.frex.Error('Failed', engine.statuscode.INVALID));
+		return;
+	}
+
+	if (!conn.req.session) {
+		callback(new User.frex.Error('Failed', engine.statuscode.NOPERM));
+		return;
+	}
+
+	if (!conn.req.session._id) {
+		callback(new User.frex.Error('Failed', engine.statuscode.NOPERM));
+		return;
+	}
+
+	var model = engine.database.model;
+	var db = engine.database.db;
+	var dbSettings = engine.database.settings;
+
+	// Update password and clear token
+	db.open(dbSettings.dbName)
+		.collection(dbSettings.table)
+		.model(model.schema)
+		.where({
+			_id: conn.req.session._id
+		})
+		.limit(1)
+		.update({
+			password: crypto.createHmac('sha256', password).digest('hex')
+		}, { return_new_data: true } ,function(err, rows) {
+
+			if (err) {
+				callback(new User.frex.Error('Failed', engine.statuscode.SYSERR));
+				return;
+			}
+
+			// This user doesn't exists
+			if (!rows) {
+				callback(new User.frex.Error('Failed', engine.statuscode.INVALID));
+				return;
+			}
+
+			callback(null);
+		});
+	
+};
+
 User.prototype.resetPasswordWithToken = function(id, token, password, callback) {
 	var self = this;
 
