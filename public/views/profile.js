@@ -104,8 +104,6 @@ App.require('User', function() {
 				]
 			}
 		}, {
-			inline: true,
-			on: 'blur',
 			onSuccess: function() {
 
 				// Set state of butten and messages
@@ -131,8 +129,8 @@ App.require('User', function() {
 					}
 
 					// Clear input box
-					$('#form_password').val('');
 					$('#form_confirm_password').val('');
+					$('#form_password').val('').focus();
 
 					// Show off success message
 					$('#password_page .ui.success.message .header').text('Update Successful');

@@ -31,9 +31,12 @@ App.require('User', function() {
 				]
 			}
 		}, {
-			inline: true,
-			on: 'blur',
 			onSuccess: function() {
+
+				// Set state of button and messages
+				$('#reset_password_submit_btn').addClass('disabled');
+				$('.ui.error.message').addClass('hidden');
+				$('.ui.success.message').addClass('hidden');
 
 				var id = $('.ui.form').form('get field', 'id').val();
 				var token = $('.ui.form').form('get field', 'token').val();
@@ -67,11 +70,4 @@ App.require('User', function() {
 				});
 			}
 		});
-
-	$('#reset_password_submit_btn').on('click', function() {
-
-		$('#reset_password_submit_btn').addClass('disabled');
-
-		$('.ui.error.message').addClass('hidden');
-	});
 });
