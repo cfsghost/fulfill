@@ -282,6 +282,10 @@ User.prototype.getInfo = function(username, callback) {
 	db.open(dbSettings.dbName)
 		.collection(dbSettings.table)
 		.model(model.schema)
+		.select({
+			password: false,
+			token: false
+		})
 		.where({
 			email: username
 		})
