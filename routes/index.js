@@ -1,10 +1,16 @@
+
+var Middleware = require('courlan');
+
 module.exports = {
 	'/': function(req, res) {
 		res.render('index');
 	},
-	'/profile': function(req, res) {
-		res.render('profile');
-	},
+	'/profile': [
+		Middleware.LoginRequired,
+		function(req, res) {
+			res.render('profile');
+		}
+	],
 	'/signin': function(req, res) {
 		res.render('signin');
 	},
