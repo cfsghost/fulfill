@@ -19,5 +19,11 @@
 			"name": "Fill Web Service",
 			"address": "youruser@gmail.com"
 		}
+	},
+	"database": {
+		"type": "mongodb",
+		"host": "localhost",
+		"port": 27017,
+		"dbName": "fulfill"
 	}
 }

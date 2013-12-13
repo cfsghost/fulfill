@@ -23,10 +23,10 @@ configManager.load(function(err, configs) {
 			// Configuring engines
 			app.frex.setEngine('User', {
 				database: {
-					driver: 'mongodb',
-					host: 'localhost',
-					port: 27017,
-					dbName: 'fulfill',
+					driver: configs.app.database.type,
+					host: configs.app.database.host,
+					port: configs.app.database.port,
+					dbName: configs.app.database.dbName,
 					table: 'user'
 				},
 				service: {
