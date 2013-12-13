@@ -1,10 +1,24 @@
 Fulfill
 =======
 
-Fulfill is a web service template, based on Node.js, frex.js and Semantic UI. It has done most of infrastructure things what web service should have, developer can realize own online service efficiently with ready-made framework.
-
 You probably have thousands of ideas, but lack of time for realizing all of them. The big problem is, Infrastructure will surely takes a lot of time and energy, it turns out you can't focus on the most important thing during development.
 
+Fulfill is a web service template, based on Node.js, frex.js and Semantic UI. It has done most of infrastructure things what web service should have, developer can realize own online service efficiently with ready-made framework.
+
+Technologies
+-
+
+* Node.js
+* MongoDB
+* [Semantic UI](http://semantic-ui.com/) - Front-end UI toolkit
+* Cookie-based session of express
+
+Dependencies
+-
+
+* [frex.js](https://github.com/cfsghost/frex.js) - Express-based web framework
+* [Courser](https://github.com/cfsghost/courser) - Route manager
+* [Courlan](https://github.com/cfsghost/courlan) - Middleware manager
 
 Usage
 -
