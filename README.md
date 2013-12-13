@@ -3,7 +3,7 @@ Fulfill
 
 You probably have thousands of ideas, but lack of time for realizing all of them. The big problem is, Infrastructure will surely takes a lot of time and energy, it turns out you can't focus on the most important thing during development.
 
-Fulfill is a web service template, based on Node.js, frex.js and Semantic UI. It has done most of infrastructure things what web service should have, developer can realize own online service efficiently with ready-made framework.
+Fulfill is a web service template, based on Node.js, frex.js and Semantic UI. It has done already most of infrastructure things what web service should have. With ready-made framework developer can realize own online service efficiently.
 
 Technologies
 -
@@ -66,7 +66,23 @@ You can configure fulfill with the following options:
 * service_name - Web service name
 * server_host - Domain name of service
 * port - Port number
-* secret_key - secret key for session
+* secret_key - Secret key for session
+* mailer - Group of Settings for mailing
+    * type - Type of server, current support SMTP protocol only
+    * host - Host of server
+    * port - Port number of server
+    * ssl - Whether does it make secure connection or not
+    * auth - Authorization information for sending e-mail
+        * user - Valid Username
+        * password - Valid Password
+    * from - Sender information
+        * name - Display name of sender
+        * address - e-mail address of sender
+* database - Group of database settings
+    * type - Type of database, it supports MongoDB only
+    * host - Host of server
+    * port - Port number of server
+    * dbName - Specific database name
 
 
 License
