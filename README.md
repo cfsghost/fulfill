@@ -3,7 +3,7 @@ Fulfill
 
 You probably have thousands of ideas, but lack of time for realizing all of them. The big problem is, Infrastructure will surely takes a lot of time and energy, it turns out you can't focus on the most important thing during development.
 
-Fulfill is a web service template, based on Node.js, frex.js and Semantic UI. It has done already most of infrastructure things what web service should have. With ready-made framework developer can realize own online service efficiently.
+Fulfill is a web service template, based on Node.js, frex.js and Semantic UI. It has already done most of infrastructure things what web service should have. With ready-made framework developer can realize own online service efficiently.
 
 Technologies
 -
