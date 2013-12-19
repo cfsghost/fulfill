@@ -8,14 +8,14 @@ module.exports = {
 	'/profile': [
 		Middleware.LoginRequired,
 		function(req, res) {
-			res.render('profile');
+			res.render('user/profile');
 		}
 	],
 	'/signin': function(req, res) {
-		res.render('signin');
+		res.render('user/signin');
 	},
 	'/signup': function(req, res) {
-		res.render('signup');
+		res.render('user/signup');
 	},
 	'/signout': function(req, res) {
 
@@ -27,11 +27,11 @@ module.exports = {
 		}, req.conn);
 	},
 	'/forget': function(req, res) {
-		res.render('forget');
+		res.render('user/forget');
 	},
 	'/reset_password/:id/:token': function(req, res) {
 
-		res.render('reset_password', {
+		res.render('user/reset_password', {
 			id: req.params.id,
 			token: req.params.token
 		});
