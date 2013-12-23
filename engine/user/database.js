@@ -2,14 +2,6 @@
 
 var DBHouse = require('dbhouse');
 
-var dbSettings = {
-	driver: 'mongodb',
-	host: 'localhost',
-	port: '27017',
-	dbName: 'fulfill',
-	table: 'user'
-};
-
 // Define schema
 var model = {
 
@@ -30,7 +22,6 @@ var model = {
 
 module.exports = {
 	dbHouse: new DBHouse(),
-	settings: dbSettings,
 	model: model,
 	db: null
 };

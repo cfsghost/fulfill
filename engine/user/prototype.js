@@ -14,7 +14,7 @@ User.prototype.auth = function(username, password, callback) {
 	var engine = User.engine;
 	var model = engine.database.model;
 	var db = engine.database.db;
-	var dbSettings = engine.database.settings;
+	var dbSettings = engine.settings.database;
 
 	db.open(dbSettings.dbName)
 		.collection(dbSettings.table)
@@ -77,7 +77,7 @@ User.prototype.resetMyPassword = function(password, callback) {
 
 	var model = engine.database.model;
 	var db = engine.database.db;
-	var dbSettings = engine.database.settings;
+	var dbSettings = engine.settings.database;
 
 	// Update password and clear token
 	db.open(dbSettings.dbName)
@@ -120,7 +120,7 @@ User.prototype.resetPasswordWithToken = function(id, token, password, callback) 
 
 	var model = engine.database.model;
 	var db = engine.database.db;
-	var dbSettings = engine.database.settings;
+	var dbSettings = engine.settings.database;
 
 	// Update password and clear token
 	db.open(dbSettings.dbName)
@@ -164,7 +164,7 @@ User.prototype.generateToken = function(username, callback) {
 		var engine = User.engine;
 		var model = engine.database.model;
 		var db = engine.database.db;
-		var dbSettings = engine.database.settings;
+		var dbSettings = engine.settings.database;
 
 		// Saving token
 		db.open(dbSettings.dbName)
@@ -276,7 +276,7 @@ User.prototype.getInfo = function(username, callback) {
 	var engine = User.engine;
 	var model = engine.database.model;
 	var db = engine.database.db;
-	var dbSettings = engine.database.settings;
+	var dbSettings = engine.settings.database;
 	var validator = conn.req.validator;
 
 	db.open(dbSettings.dbName)
@@ -320,7 +320,7 @@ User.prototype.signUp = function(info, callback) {
 	var engine = User.engine;
 	var model = engine.database.model;
 	var db = engine.database.db;
-	var dbSettings = engine.database.settings;
+	var dbSettings = engine.settings.database;
 	var validator = conn.req.validator;
 
 	// Check display name
@@ -418,7 +418,7 @@ User.prototype.editMyInfo = function(info, callback) {
 
 	var model = engine.database.model;
 	var db = engine.database.db;
-	var dbSettings = engine.database.settings;
+	var dbSettings = engine.settings.database;
 	var validator = conn.req.validator;
 
 	// Check display name
