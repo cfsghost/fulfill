@@ -22,8 +22,8 @@
   "dependencies": {
     "frex.js": "0.2.1",
 	"courlan": ">= 0.0.1",
+    "dbhouse": ">=0.0.26",
     "async": "~0.2.9",
-    "dbhouse": "0.0.25",
     "validator": "~2.0.0",
     "nodemailer": "~0.5.13"
   }
