@@ -6,6 +6,10 @@
 	"owner": {
 		"name": "Fulfill, Inc."
 	},
+	"admin": {
+		"password": "3enDu9j5",
+		"disabled": false
+	},
 	"mailer": {
 		"type": "smtp",
 		"host": "smtp.gmail.com",

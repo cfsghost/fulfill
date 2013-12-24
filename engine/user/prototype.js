@@ -16,11 +16,33 @@ User.prototype.auth = function(username, password, callback) {
 	var db = engine.database.db;
 	var dbSettings = engine.settings.database;
 
+	// Admin authorization
+	if (!engine.app.locals.configs.app.admin.disabled) {
+
+		if (username == 'admin' &&
+			password == engine.app.locals.configs.app.admin.password) {
+
+			conn.req.session._id = null;
+			conn.req.session.name = 'Admin';
+			conn.req.session.username = 'admin';
+			conn.req.session.email = null;
+
+			process.nextTick(function() {
+				callback(null, true);
+			});
+
+			return;
+		}
+	}
+
 	db.open(dbSettings.dbName)
 		.collection(dbSettings.table)
 		.model(model.schema)
 		.where({
-			email: username
+			$or: [
+				{ email: username },
+				{ username: username }
+			]
 		})
 		.limit(1)
 		.query(function(err, rows) {
@@ -48,6 +70,7 @@ User.prototype.auth = function(username, password, callback) {
 			// Initializing session
 			conn.req.session._id = row._id;
 			conn.req.session.name = row.name;
+			conn.req.session.username = row.username || row.email;
 			conn.req.session.email = row.email;
 
 			callback(null, true);
@@ -232,6 +255,7 @@ User.prototype.signOut = function(callback) {
 
 	conn.req.session._id = null;
 	conn.req.session.name = null;
+	conn.req.session.username = null;
 	conn.req.session.email = null;
 
 	callback(null);
@@ -306,6 +330,7 @@ User.prototype.getInfo = function(username, callback) {
 			callback(null, {
 				name: rows[0].name,
 				email: rows[0].email,
+				username: rows[0].username,
 				created: rows[0].created
 			});
 
@@ -375,6 +400,7 @@ User.prototype.signUp = function(info, callback) {
 				.insert({
 					name: info.displayname,
 					email: info.email,
+					username: info.username || info.email,
 					password: crypto.createHmac('sha256', info.password).digest('hex'),
 					created: new Date().getTime()
 				}, function(err, row) {
@@ -387,6 +413,7 @@ User.prototype.signUp = function(info, callback) {
 					// Initializing session
 					conn.req.session._id = row._id;
 					conn.req.session.name = info.displayname;
+					conn.req.session.username = row.username;
 					conn.req.session.email = info.email;
 
 					// Send information back
