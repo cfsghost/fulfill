@@ -29,9 +29,17 @@ html
 								!= session.name
 								i.dropdown.icon
 								div.menu
-									a.item(href='/profile')
-										i.edit.icon
-										!='Edit Profile'
+
+									- if (session.username != 'admin')
+										a.item(href='/profile')
+											i.edit.icon
+											!='Edit Profile'
+
+									- if (session.permission)
+										a.item(href='/admin')
+											i.edit.icon
+											!='Manage Service'
+
 									a.item(href='/signout')
 										i.sign.out.icon
 										!='Sign Out'

@@ -8,6 +8,13 @@ module.exports = {
 	'/profile': [
 		Middleware.LoginRequired,
 		function(req, res) {
+			if (req.session.username == 'admin') {
+
+				res.status(404);
+				res.end('404 Not Found');
+				return;
+			}
+
 			res.render('user/profile');
 		}
 	],

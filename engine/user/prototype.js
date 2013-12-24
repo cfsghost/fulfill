@@ -26,6 +26,9 @@ User.prototype.auth = function(username, password, callback) {
 			conn.req.session.name = 'Admin';
 			conn.req.session.username = 'admin';
 			conn.req.session.email = null;
+			conn.req.session.permission = {
+				admin: true
+			};
 
 			process.nextTick(function() {
 				callback(null, true);
@@ -72,6 +75,7 @@ User.prototype.auth = function(username, password, callback) {
 			conn.req.session.name = row.name;
 			conn.req.session.username = row.username || row.email;
 			conn.req.session.email = row.email;
+			conn.req.session.permission = row.permission || {};
 
 			callback(null, true);
 		});
@@ -257,6 +261,7 @@ User.prototype.signOut = function(callback) {
 	conn.req.session.name = null;
 	conn.req.session.username = null;
 	conn.req.session.email = null;
+	conn.req.session.permission = {};
 
 	callback(null);
 };
@@ -415,6 +420,7 @@ User.prototype.signUp = function(info, callback) {
 					conn.req.session.name = info.displayname;
 					conn.req.session.username = row.username;
 					conn.req.session.email = info.email;
+					conn.req.session.permission = {};
 
 					// Send information back
 					callback(null, {

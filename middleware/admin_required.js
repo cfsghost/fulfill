@@ -1,9 +1,9 @@
 "use strict";
 
 module.exports = {
-	name: 'LoginRequired',
+	name: 'AdminRequired',
 	middleware: function(req, res, next) {
-		if (req.session.username) {
+		if (req.session.permission.admin) {
 			next();
 			return;
 		}
