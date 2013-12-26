@@ -30,7 +30,7 @@ App.require('Admin', function() {
 							// Save button was clicked
 
 							// Permission
-							$('#user_modify .toggle.checkbox input').each(function() {
+							$('#modify_field_permission input').each(function() {
 								result.permission[$(this).val()] = this.checked;
 							});
 
@@ -63,9 +63,9 @@ App.require('Admin', function() {
 				$('#modify_field_email').val(result.email);
 
 				if (result.permission.admin) {
-					$('#user_modify .toggle.checkbox').checkbox('enable');
+					$('#modify_field_permission').checkbox('enable');
 				} else {
-					$('#user_modify .toggle.checkbox').checkbox('disable');
+					$('#modify_field_permission').checkbox('disable');
 				}
 			});
 

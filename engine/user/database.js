@@ -13,7 +13,8 @@ var model = {
 		password: { type: 'String' },
 		token: { type: 'String' },
 		permission: { type: 'Dict', subtype: 'Boolean' },
-		created: { type: 'Date' }
+		created: { type: 'Date' },
+		disabled: { type: 'Boolean' }
 	}),
 	index: new DBHouse.Index([
 	    { fields: [ 'name' ] },

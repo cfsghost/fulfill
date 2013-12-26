@@ -10,7 +10,7 @@ block body
 		div.container
 			div.sidebar_menu
 				div.ui.secondary.vertical.pointing.menu.blue#sidebar_menu
-					a.item.active(href='#profile', rel='user') User Management
+					a.item.active(href='#user_management', rel='user') User Management
 
 			div.ui.page.grid.segment.transition#user_management
 
@@ -31,7 +31,9 @@ block body
 
 			div.ui.small.modal#user_modify
 
-				div.header Modify User
+				div.header
+
+					div Modify User
 
 				div.content
 
@@ -50,7 +52,7 @@ block body
 
 						div.field
 							label Permission
-							div.ui.toggle.checkbox
+							div.ui.toggle.checkbox#modify_field_permission
 								input(type='checkbox', value='admin')
 								label Admin
 
