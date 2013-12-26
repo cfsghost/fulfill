@@ -6,7 +6,8 @@ App.require('Admin', function() {
 	admin.listUsers({}, function(err, results) {
 
 		results.forEach(function(result, index, arr) {
-			var $row = $('<tr>');
+			var $row = $('<tr>').addClass('hover');
+			var $control = $('<td>');
 			var $username = $('<td>').text(result.username);
 			var $name = $('<td>').text(result.name);
 			var $email = $('<td>').text(result.email);
@@ -16,26 +17,67 @@ App.require('Admin', function() {
 				result.permission = {};
 
 			if (result.permission.admin)
-				$permission.text('Admin');
+				$permission.text('admin');
 
-			$row
-				.append($username)
-				.append($name)
-				.append($email)
-				.append($permission);
+			// Control buttons
+			var $editBtn = $('<i>').addClass('icon edit link');
 
-			$row.on('click', function() {
-				$('#user_modify').modal('show');
-				$('#modify_field_id').val(result._id);
+			$editBtn.on('click', function() {
+				$('#user_modify')
+					.modal('setting', {
+						onApprove: function() {
+
+							// Save button was clicked
+
+							// Permission
+							$('#user_modify .toggle.checkbox input').each(function() {
+								result.permission[$(this).val()] = this.checked;
+							});
+
+							// Update user information
+							admin.updateUser(result._id, {
+								username: $('#modify_field_username').val(),
+								name: $('#modify_field_displayname').val(),
+								email: $('#modify_field_email').val(),
+								permission: result.permission
+							}, function(err) {
+								$username.text($('#modify_field_username').val());
+								$name.text($('#modify_field_displayname').val());
+								$email.text($('#modify_field_email').val());
+
+								// Update user list
+								var perms = [];
+								for (var perm in result.permission) {
+									if (result.permission[perm])
+										perms.push(perm);
+								}
+
+								$permission.text(perms.join(','));
+							});
+						}
+					})
+					.modal('show');
+
 				$('#modify_field_username').val(result.username);
 				$('#modify_field_displayname').val(result.name);
 				$('#modify_field_email').val(result.email);
 
-				if (result.permission.admin)
+				if (result.permission.admin) {
 					$('#user_modify .toggle.checkbox').checkbox('enable');
-				else
+				} else {
 					$('#user_modify .toggle.checkbox').checkbox('disable');
+				}
 			});
+
+			$control.append($editBtn);
+
+			// Combine all things
+			$row
+				.append($control)
+				.append($username)
+				.append($name)
+				.append($email)
+				.append($permission);
 
 			$('#user_table > tbody').append($row);
 		});

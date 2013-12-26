@@ -1,0 +1,61 @@
+extends ../layouts/default
+
+block script
+	script(type='text/javascript', src='/views/admin/index.js')
+
+block body
+
+	div#profile
+
+		div.container
+			div.sidebar_menu
+				div.ui.secondary.vertical.pointing.menu.blue#sidebar_menu
+					a.item.active(href='#profile', rel='user') User Management
+
+			div.ui.page.grid.segment.transition#user_management
+
+				div.column
+
+					div.ui.fluid
+
+						table.ui.table.segment#user_table
+							thead
+								tr
+									th
+									th Username
+									th Name
+									th E-mail
+									th Permission
+
+							tbody
+
+			div.ui.small.modal#user_modify
+
+				div.header Modify User
+
+				div.content
+
+					div.ui.fluid.form
+						div.field
+							label Username
+							input#modify_field_username(type='text', name='username', placeholder='example')
+
+						div.field
+							label Display Name
+							input#modify_field_displayname(type='text', name='displayname', placeholder='Fred Chien')
+
+						div.field
+							label E-mail
+							input#modify_field_email(type='text', name='email', placeholder='example@example.com')
+
+						div.field
+							label Permission
+							div.ui.toggle.checkbox
+								input(type='checkbox', value='admin')
+								label Admin
+
+				div.actions
+					div.ui.button Cancel
+					div.ui.button.positive.right.icon.labeled
+						i.checkmark.icon
+						!='Save'
