@@ -36,9 +36,10 @@ html
 											!='Edit Profile'
 
 									- if (session.permission)
-										a.item(href='/admin')
-											i.edit.icon
-											!='Manage Service'
+										- if (session.permission.admin)
+											a.item(href='/admin')
+												i.edit.icon
+												!='Manage Service'
 
 									a.item(href='/signout')
 										i.sign.out.icon
