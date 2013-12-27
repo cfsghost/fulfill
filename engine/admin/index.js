@@ -17,11 +17,15 @@ module.exports = {
 	},
 	check_permission: function(conn, callback) {
 
-		if (!conn.req.session.username)
+		if (!conn.req.session.username) {
 			callback(false);
+			return;
+		}
 
-		if (!conn.req.session.permission)
+		if (!conn.req.session.permission) {
 			callback(false);
+			return;
+		}
 
 		if (conn.req.session.permission.admin) {
 			callback(true);
