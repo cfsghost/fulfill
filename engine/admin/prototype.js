@@ -7,6 +7,9 @@ var Admin = module.exports = function() {
 Admin.prototype.listUsers = function(condition, callback) {
 	var self = this;
 
+	if (!(callback instanceof Function))
+		return;
+
 	var user = Admin.frex.getMetadata('User');
 	var model = user.database.model;
 	var db = user.database.db;
@@ -38,6 +41,9 @@ Admin.prototype.listUsers = function(condition, callback) {
 
 Admin.prototype.updateUser = function(id, info, callback) {
 	var self = this;
+
+	if (!(callback instanceof Function))
+		return;
 
 	var user = Admin.frex.getMetadata('User');
 	var model = user.database.model;

@@ -10,6 +10,9 @@ var User = module.exports = function() {
 User.prototype.auth = function(username, password, callback) {
 	var self = this;
 
+	if (!(callback instanceof Function))
+		return;
+
 	var conn = User.frex.getConnection(arguments);
 	var engine = User.engine;
 	var model = engine.database.model;
@@ -84,6 +87,9 @@ User.prototype.auth = function(username, password, callback) {
 User.prototype.resetMyPassword = function(password, callback) {
 	var self = this;
 
+	if (!(callback instanceof Function))
+		return;
+
 	var conn = User.frex.getConnection(arguments);
 	var engine = User.engine;
 
@@ -137,6 +143,9 @@ User.prototype.resetMyPassword = function(password, callback) {
 User.prototype.resetPasswordWithToken = function(id, token, password, callback) {
 	var self = this;
 
+	if (!(callback instanceof Function))
+		return;
+
 	var conn = User.frex.getConnection(arguments);
 	var engine = User.engine;
 
@@ -181,6 +190,9 @@ User.prototype.resetPasswordWithToken = function(id, token, password, callback) 
 
 User.prototype.generateToken = function(username, callback) {
 	var self = this;
+
+	if (!(callback instanceof Function))
+		return;
 
 	var conn = User.frex.getConnection(arguments);
 
@@ -252,6 +264,9 @@ User.prototype.generateToken = function(username, callback) {
 
 User.prototype.signOut = function(callback) {
 
+	if (!(callback instanceof Function))
+		return;
+
 	var conn = User.frex.getConnection(arguments);
 
 	if (!conn.req.session)
@@ -267,6 +282,9 @@ User.prototype.signOut = function(callback) {
 };
 
 User.prototype.isLogin = function(callback) {
+
+	if (!(callback instanceof Function))
+		return;
 
 	var conn = User.frex.getConnection(arguments);
 
@@ -284,6 +302,9 @@ User.prototype.isLogin = function(callback) {
 
 User.prototype.getMyInfo = function(callback) {
 
+	if (!(callback instanceof Function))
+		return;
+
 	var conn = User.frex.getConnection(arguments);
 
 	// Login is required
@@ -299,6 +320,9 @@ User.prototype.getMyInfo = function(callback) {
 };
 
 User.prototype.getInfo = function(username, callback) {
+
+	if (!(callback instanceof Function))
+		return;
 
 	var conn = User.frex.getConnection(arguments);
  
@@ -344,6 +368,9 @@ User.prototype.getInfo = function(username, callback) {
 
 User.prototype.signUp = function(info, callback) {
 	var self = this;
+
+	if (!(callback instanceof Function))
+		return;
 
 	var conn = User.frex.getConnection(arguments);
 
@@ -434,6 +461,9 @@ User.prototype.signUp = function(info, callback) {
 
 User.prototype.editMyInfo = function(info, callback) {
 	var self = this;
+
+	if (!(callback instanceof Function))
+		return;
 
 	var conn = User.frex.getConnection(arguments);
 
