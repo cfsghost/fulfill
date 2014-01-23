@@ -52,10 +52,13 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('debug', function() {
-		grunt.util.spawn({
+		var child = grunt.util.spawn({
 			cmd: 'node',
 			args: [ grunt.config('pkg.main') ]
 		});
+
+		child.stdout.pipe(process.stdout);
+		child.stderr.pipe(process.stderr);
 
 		grunt.task.run('watch');
 	});
