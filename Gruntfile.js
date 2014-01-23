@@ -50,4 +50,13 @@ module.exports = function(grunt) {
 	grunt.registerTask('build', [
 		'uglify:view'
 	]);
+
+	grunt.registerTask('debug', function() {
+		grunt.util.spawn({
+			cmd: 'node',
+			args: [ grunt.config('pkg.main') ]
+		});
+
+		grunt.task.run('watch');
+	});
 };

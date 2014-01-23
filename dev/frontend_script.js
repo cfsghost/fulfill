@@ -75,9 +75,6 @@ FrontendScript.prototype.scanFiles = function(filepath) {
 FrontendScript.prototype.watch = function(action, filepath) {
 	var self = this;
 
-	var levelSets = filepath.split(path.sep);
-	levelSets[0] = self.destDir;
-
 	// Finding which group this file belongs to
 	var dest = null;
 	var src = null;
@@ -96,8 +93,6 @@ FrontendScript.prototype.watch = function(action, filepath) {
 			{
 				src: src,
 				dest: dest
-				//src: filepath,
-				//dest: levelSets.join(path.sep)
 			}
 		]);
 	}
