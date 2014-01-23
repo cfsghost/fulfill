@@ -27,7 +27,7 @@
     "grunt-contrib-watch": "~0.5.3"
   },
   "dependencies": {
-    "frex.js": "0.2.1",
+	"frex.js": ">= 0.2.4",
     "courlan": ">= 0.0.1",
     "dbhouse": ">=0.0.26",
     "async": "~0.2.9",
