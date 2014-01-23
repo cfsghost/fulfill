@@ -47,10 +47,16 @@ Usage
     npm install .
     ```
 
-5. Running your web service immediately:
+5. Using `Grunt` to initialize and minify JavaScript and CSS files:
 
     ```
-    node app.js
+    grunt build
+    ```
+
+6. Running your web service in debug mode immediately:
+
+    ```
+    grunt debug
     ```
 
 Settings
