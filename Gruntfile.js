@@ -6,6 +6,9 @@ module.exports = function(grunt) {
 	var frontendScript = new FrontendScript(grunt);
 	frontendScript.viewScripts = {
 
+		// Fullfill features
+		'public/js/fulfill.js': [ 'frontend/js/fulfill.js' ],
+
 		// Javascript for homepage
 		'public/views/index.js': [ 'frontend/views/index.js' ],
 
