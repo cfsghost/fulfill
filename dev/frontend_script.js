@@ -55,7 +55,8 @@ FrontendScript.prototype.scanFiles = function(filepath) {
 	var subFiles = [];
 	var curFiles = [];
 	var files = fs.readdirSync(filepath);
-	for (var filename in files) {
+	for (var index in files) {
+		var filename = files[index];
 
 		var realPath = path.join(filepath, filename);
 
