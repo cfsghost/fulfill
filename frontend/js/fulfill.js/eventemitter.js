@@ -1,5 +1,5 @@
 
-// Event Emitter
+// Node.js style Event Emitter
 (function(jQuery) {
 
 	jQuery.EventEmitter = {
@@ -8,15 +8,29 @@
 		},
 		emit: function(evt, data) {
 			!this._JQ && this._JQInit();
-			this._JQ.trigger(evt, Array.prototype.slice.call(arguments).splice(0, 1));
+			var args = Array.prototype.slice.call(arguments);
+			args.splice(0, 1);
+			this._JQ.trigger(evt, args);
 		},
 		once: function(evt, handler) {
 			!this._JQ && this._JQInit();
-			this._JQ.one(evt, handler);
+			this._JQ.one(evt, function() {
+				var args = Array.prototype.slice.call(arguments);
+				args.splice(0, 1);
+				handler.apply(this, args);
+
+				return false;
+			});
 		},
 		on: function(evt, handler) {
 			!this._JQ && this._JQInit();
-			this._JQ.bind(evt, handler);
+			this._JQ.bind(evt, function() {
+				var args = Array.prototype.slice.call(arguments);
+				args.splice(0, 1);
+				handler.apply(this, args);
+
+				return false;
+			});
 		},
 		off: function(evt, handler) {
 			!this._JQ && this._JQInit();
@@ -25,8 +39,3 @@
 	};
 
 }(jQuery));
-
-var util = {
-	inherit: function() {
-	}
-};
